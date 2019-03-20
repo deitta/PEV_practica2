@@ -16,7 +16,7 @@ public class SeleccionTorneo implements AlgoritmoSeleccion {
 		int nGenes = pob[0].getnGenes();
 		double tolerancia = pob[0].getTolerancia();
 		int idFuncion = pob[0].getIdFuncion();
-		Cromosoma mejor = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
+		Cromosoma mejor = new Cromosoma(idFuncion, tolerancia, nGenes);
 		
 		for(int i = 0; i < tamPob; i++){
 			posMejor = 0;

@@ -1,10 +1,8 @@
 package metodosCruce;
 
-import cromosoma.FactoriaCromosoma;
 import base.Cromosoma;
 
-public class CruceUniforme implements AlgoritmoCruce {
-
+public class cruceERX implements AlgoritmoCruce {
 	public void cruce(Cromosoma[] pob, int tamPob, double probCruce) {
 		Cromosoma hijo1, hijo2;
 		int nGenes = pob[0].getnGenes();
@@ -16,7 +14,7 @@ public class CruceUniforme implements AlgoritmoCruce {
 
 		//Se eligen los individuos a cruzar
 		for (int i = 0; i < tamPob; i++) {
-			prob = Math.random(); //se generan tam_pob números aleatorios en [0 1)
+			prob = Math.random(); //se generan tam_pob nÃºmeros aleatorios en [0 1)
 			//se eligen los individuos de las posiciones i si prob < probCruce
 			if (prob < probCruce){
 				selCruce[nSelCruce] = i;
@@ -28,25 +26,21 @@ public class CruceUniforme implements AlgoritmoCruce {
 		if ((nSelCruce % 2) == 1)
 			nSelCruce--;
 
+		// se cruzan los individuos elegidos en un punto al azar. Todos por el mismo punto
 		for (int i = 0; i < nSelCruce; i+=2) {
-			hijo1 = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
-			hijo2 = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
-			for (int j = 0; j < pob[0].getLcrom(); j++){
-				prob = (int) Math.random() * 2;
-				if (prob == 1) {
-					hijo1.cruzar(pob[selCruce[i]], j);
-					hijo2.cruzar(pob[selCruce[i+1]], j);
-				} else {
-					hijo1.cruzar(pob[selCruce[i+1]], j);
-					hijo2.cruzar(pob[selCruce[i]], j);
-				}
-			}
-
+			hijo1 = new Cromosoma(idFuncion, tolerancia, nGenes);
+			hijo2 = new Cromosoma(idFuncion, tolerancia, nGenes);
+			
+			crucePMX(pob[selCruce[i]], pob[selCruce[i+1]], hijo1, hijo2);
 			// los nuevos individuos sustituyen a sus progenitores
-			// if (pob[selCruce[i]].getFitness() < hijo1.getFitness()) 
 			pob[selCruce[i]] = hijo1;
-			// if (pob[selCruce[i+1]].getFitness() < hijo2.getFitness()) 
 			pob[selCruce[i+1]] = hijo2;
 		}
 	}
+	
+
+	private void crucePMX(Cromosoma padre1, Cromosoma padre2, Cromosoma hijo1, Cromosoma hijo2) {
+		
+	}
+
 }

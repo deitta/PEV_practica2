@@ -1,6 +1,5 @@
 package base;
 
-import cromosoma.FactoriaCromosoma;
 import metodosCruce.AlgoritmoCruce;
 import metodosCruce.FactoriaCruce;
 import metodosSeleccion.AlgoritmoSeleccion;
@@ -17,11 +16,9 @@ public class AlgoritmoGenetico {
 	double tolerancia;  // precision
 	
 	String seleccion;
-	String cruceBinario;
-	String cruceReal;
+	String cruce;
+	String mutacion;
 	int participantes;
-	int idFuncion;
-	int nGenes;
 	double elitismo; // elitismo*tamPob = tamElite
 	Cromosoma[] elite;
 
@@ -35,43 +32,39 @@ public class AlgoritmoGenetico {
 		tamPob = 100;
 		numMaxGen = 100;
 		posMejor = 0;
-		idFuncion = 1;
 		probCruce = 0.6;
 		probMutacion = 0.05;
 		tolerancia = 0.001;
 		seleccion = "Ruleta";
-		cruceBinario = "Monopunto";
-		cruceReal = "Monopunto";
+		cruce = "CX";
+		mutacion = "Heuristica";
 		participantes = 3;
-		nGenes = 2;
 		elitismo = 0;
-		pob = new Cromosoma[tamPob];
-		elite = new Cromosoma[(int) (tamPob*elitismo)];
-
-		for (int i = 0; i < tamPob; i++)
-			pob[i] = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
-		for (int i = 0; i < (int) (tamPob*elitismo); i++)
-			elite[i] = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
-		elMejor = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
-	}
-	
-	public void inicializaPoblacion() {
-		pob = new Cromosoma[tamPob];
-		elite = new Cromosoma[(int) (tamPob*elitismo)];
 
 		genMedia = new double[numMaxGen];
 		genMejor = new double[numMaxGen];
 		mejorAbsoluto = new double[numMaxGen];
 
+		pob = new Cromosoma[tamPob];
+		elite = new Cromosoma[(int) (tamPob*elitismo)];
+
+		for (int i = 0; i < tamPob; i++)
+			pob[i] = new Cromosoma(tolerancia);
+		for (int i = 0; i < (int) (tamPob*elitismo); i++)
+			elite[i] = new Cromosoma(tolerancia);
+		elMejor = new Cromosoma(tolerancia);
+	}
+	
+	public void inicializaPoblacion() {
 		for (int i = 0; i < tamPob; i++) {
-			pob[i] = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
+			pob[i] = new Cromosoma(tolerancia);
 			pob[i].inicializaCromosoma();
 			pob[i].fitness = pob[i].evaluaCromosoma();
 		}
 		for (int i = 0; i < (int) (tamPob*elitismo); i++)
-			elite[i] = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
+			elite[i] = new Cromosoma(tolerancia);
 
-		elMejor = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
+		elMejor = new Cromosoma(tolerancia);
 		elMejor.copiaCromosoma(pob[0]);
 	}
 
@@ -154,7 +147,7 @@ public class AlgoritmoGenetico {
 		Cromosoma[] nuevaPob = new Cromosoma[tamPob];
 		
 		for (int i = 0; i < tamPob; i++)
-			nuevaPob[i] = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
+			nuevaPob[i] = new Cromosoma(tolerancia);
 		
 		AlgoritmoSeleccion algoSeleccion = FactoriaSeleccion.getAlgoritmoDeSeleccion(seleccion, participantes);
 		algoSeleccion.seleccion(pob, nuevaPob, tamPob);
@@ -163,29 +156,14 @@ public class AlgoritmoGenetico {
 	
 	public void cruce(){
 		AlgoritmoCruce algoCruce;
-		if (idFuncion != 5) algoCruce = FactoriaCruce.getAlgoritmoDeCruce(cruceBinario);
-		else algoCruce = FactoriaCruce.getAlgoritmoDeCruce(cruceReal);
+		algoCruce = FactoriaCruce.getAlgoritmoDeCruce(cruce);
 		algoCruce.cruce(pob, tamPob, probCruce);
 	}
 	
 	public void mutacion(){
-		boolean mutado;
-		double prob;
-
-		for (int i = 0; i < tamPob; i++) {
-			mutado = false;
-			for (int j = 0; j < pob[0].lcrom; j++) {
-				// se genera un numero aleatorio entre [0 1]
-				prob = Math.random();
-				// mutan los genes con prob<probMutacion
-				if (prob < probMutacion){
-					pob[i].mutar(j);
-					mutado = true;
-				}
-			}
-			if (mutado)
-				pob[i].fitness = pob[i].evaluaCromosoma();
-		}
+		AlgoritmoMutacion algoMutacion;
+		algoMutacion = FactoriaMutacion.getAlgoritmoDeMutacion(mutacion);
+		algoMutacion.Mutacion(pob, tamPob, probMutacion);
 	}
 
 	public void separaElite(int tamElite){
@@ -353,20 +331,20 @@ public class AlgoritmoGenetico {
 		this.seleccion = seleccion;
 	}
 
-	public String getCruceBinario() {
-		return cruceBinario;
+	public String getCruce() {
+		return cruce;
 	}
 
-	public void setCruceBinario(String cruce) {
-		this.cruceBinario = cruce;
+	public void setCruce(String cruce) {
+		this.cruce = cruce;
 	}
 
-	public String getCruceReal() {
-		return cruceReal;
+	public String getMutacion() {
+		return mutacion;
 	}
 
-	public void setCruceReal(String cruce) {
-		this.cruceReal = cruce;
+	public void setMutacion(String mutacion) {
+		this.mutacion = mutacion;
 	}
 
 	public int getParticipantes() {
@@ -375,22 +353,6 @@ public class AlgoritmoGenetico {
 
 	public void setParticipantes(int participantes) {
 		this.participantes = participantes;
-	}
-
-	public int getIdFuncion() {
-		return idFuncion;
-	}
-
-	public void setIdFuncion(int idFuncion) {
-		this.idFuncion = idFuncion;
-	}
-
-	public int getnGenes() {
-		return nGenes;
-	}
-
-	public void setnGenes(int nGenes) {
-		this.nGenes = nGenes;
 	}
 
 	public int getTamPob() {

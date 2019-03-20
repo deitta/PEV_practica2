@@ -23,7 +23,7 @@ public class SeleccionRestos implements AlgoritmoSeleccion {
 			Cromosoma[] pobFaltantes = new Cromosoma[tamPob];
 			
 			for (int i = 0; i < faltantes; i++)
-				pobFaltantes[i] = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
+				pobFaltantes[i] = new Cromosoma(idFuncion, tolerancia, nGenes);
 			
 			AlgoritmoSeleccion algoSeleccion = FactoriaSeleccion.getAlgoritmoDeSeleccion("Ruleta", 0);
 			algoSeleccion.seleccion(pob, pobFaltantes, tamPob);

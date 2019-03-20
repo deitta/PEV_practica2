@@ -1,10 +1,8 @@
 package metodosCruce;
 
 import base.Cromosoma;
-import base.GenReal;
-import cromosoma.FactoriaCromosoma;
 
-public class CruceAritmetico implements AlgoritmoCruce {
+public class cruceOX implements AlgoritmoCruce {
 	public void cruce(Cromosoma[] pob, int tamPob, double probCruce) {
 		Cromosoma hijo1, hijo2;
 		int nGenes = pob[0].getnGenes();
@@ -30,10 +28,10 @@ public class CruceAritmetico implements AlgoritmoCruce {
 
 		// se cruzan los individuos elegidos en un punto al azar. Todos por el mismo punto
 		for (int i = 0; i < nSelCruce; i+=2) {
-			hijo1 = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
-			hijo2 = FactoriaCromosoma.getFuncionCromosoma(idFuncion, tolerancia, nGenes);
+			hijo1 = new Cromosoma(idFuncion, tolerancia, nGenes);
+			hijo2 = new Cromosoma(idFuncion, tolerancia, nGenes);
 			
-			cruceAritmetico(pob[selCruce[i]], pob[selCruce[i+1]], hijo1, hijo2);
+			crucePMX(pob[selCruce[i]], pob[selCruce[i+1]], hijo1, hijo2);
 			// los nuevos individuos sustituyen a sus progenitores
 			pob[selCruce[i]] = hijo1;
 			pob[selCruce[i+1]] = hijo2;
@@ -41,17 +39,8 @@ public class CruceAritmetico implements AlgoritmoCruce {
 	}
 	
 
-	private void cruceAritmetico(Cromosoma padre1, Cromosoma padre2, Cromosoma hijo1, Cromosoma hijo2) {
-		double alfa;
-		// primera parte del intercambio: 1 a 1 y 2 a 2
-		for (int i = 0; i < padre1.getLcrom(); i++) {
-			alfa = Math.random();
-			((GenReal) hijo1.genes[i]).setValor(((GenReal) padre1.genes[i]).getValor()*alfa + ((GenReal) padre2.genes[i]).getValor()*(1 - alfa));
-			((GenReal) hijo2.genes[i]).setValor(((GenReal) padre2.genes[i]).getValor()*alfa + ((GenReal) padre1.genes[i]).getValor()*(1 - alfa));
-		}
-
-		// se evaluan
-		hijo1.setFitness(hijo1.evaluaCromosoma());
-		hijo2.setFitness(hijo2.evaluaCromosoma());
+	private void crucePMX(Cromosoma padre1, Cromosoma padre2, Cromosoma hijo1, Cromosoma hijo2) {
+		
 	}
+
 }
