@@ -7,20 +7,16 @@ public abstract class Cromosoma {
 	protected double punt; // puntRelat = aptitud / sumaAptitud
 	protected double puntAcu; // para seleccion
 	
-	protected int lcrom;
-	private int nGenes;
+	protected int lcrom = 27;
+	private int nGenes = 27;
 	private double tolerancia;
 	protected double adaptacion;
-	private int idFuncion;
-
-	int indGen;
-	int posGen;
 	
-	public Cromosoma(double tolerancia, int idFuncion, int nGenes) {
+	public Cromosoma(double tolerancia) {
 		this.setTolerancia(tolerancia);
-		this.setIdFuncion(idFuncion);
 		this.genes = new Gen[nGenes];
-		this.setnGenes(nGenes);
+		for (int i = 0; i < nGenes; i++)
+			genes[i] = new Gen();
 	}
 
 	public void inicializaCromosoma() {
@@ -29,34 +25,16 @@ public abstract class Cromosoma {
 		}
 	}
 	
-	public void inicializaGenes(int indGen, double max, double min){ //solamente crea los genes vacios
-		genes[indGen] = new GenBinario(max, min, getTolerancia());
-	}
-	
-	public void cruzar(Cromosoma padre, int pos) { // es el indice del alelo
-		indGen = 0;
-		posGen = 0;
-		obtenIndGen(pos);
+	public void cruzar(Cromosoma padre, int pos) {
 		genes[indGen].insertar(((GenBinario) padre.genes[indGen]).getAlelo(posGen), posGen);
 	}
 	
-	public void mutar(int pos) {
-		indGen = 0;
-		posGen = 0;
-		obtenIndGen(pos);
-		genes[indGen].insertar(Math.abs(((GenBinario)genes[indGen]).getAlelo(posGen)-1), posGen);
+	public void mutar(int valor, int pos) {
+		genes[indGen].insertar(valor, pos);
 	}
 
-	public abstract double evaluaCromosoma();
+	public double evaluaCromosoma(){
 
-	private void obtenIndGen(int pos){
-		indGen = 0;
-		int posAcum = genes[indGen].getLongitud();
-		while (posAcum <= pos && posAcum < lcrom) {
-			indGen++;
-			posAcum += genes[indGen].getLongitud();
-		}
-		posGen = pos-(posAcum-genes[indGen].getLongitud());
 	}
 
 	public void copiaCromosoma(Cromosoma cromosoma) {
