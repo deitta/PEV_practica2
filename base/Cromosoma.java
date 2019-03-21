@@ -7,16 +7,13 @@ public abstract class Cromosoma {
 	protected double punt; // puntRelat = aptitud / sumaAptitud
 	protected double puntAcu; // para seleccion
 	
-	protected int lcrom = 27;
 	private int nGenes = 27;
-	private double tolerancia;
 	protected double adaptacion;
 	
-	public Cromosoma(double tolerancia) {
-		this.setTolerancia(tolerancia);
+	public Cromosoma() {
 		this.genes = new Gen[nGenes];
 		for (int i = 0; i < nGenes; i++)
-			genes[i] = new Gen();
+			genes[i] = new Gen(i);
 	}
 
 	public void inicializaCromosoma() {
@@ -25,16 +22,19 @@ public abstract class Cromosoma {
 		}
 	}
 	
-	public void cruzar(Cromosoma padre, int pos) {
-		genes[indGen].insertar(padre.genes[pos].ciudad, pos);
-	}
-	
-	public void mutar(int valor, int pos) {
-		genes[indGen].insertar(valor, pos);
+	public void insertar(int ciudad, int pos) {
+		this.genes[pos].ciudad = ciudad;
 	}
 
-	public double evaluaCromosoma(){
+	public int evaluaCromosoma(){
+		int fitness = 0, ciudad = 25;
 
+		for (int i = 0; i < nGenes; i++){
+			fitness += genes[i].distanciaA(ciudad);
+			ciudad = genes[i].ciudad;
+		}
+
+		return fitness;
 	}
 
 	public void copiaCromosoma(Cromosoma cromosoma) {
@@ -45,24 +45,13 @@ public abstract class Cromosoma {
 		punt = cromosoma.punt;
 		puntAcu = cromosoma.puntAcu;
 		
-		lcrom = cromosoma.lcrom;
 		nGenes = cromosoma.nGenes;
-		tolerancia = cromosoma.tolerancia;
 		adaptacion = cromosoma.adaptacion;
-		idFuncion = cromosoma.idFuncion;
 	}
 	
 // SET & GET
 
 	public abstract boolean isMaximizar();
-
-	public int getLongitud(){
-		int l = 0;
-		for (int i = 0; i < getnGenes(); i++){
-			l += genes[i].getLongitud();
-		}
-		return l;
-	}
 	
 	public double getFitness(){
 		return this.fitness;
@@ -75,10 +64,6 @@ public abstract class Cromosoma {
 	public double getPuntAcu() {
 		return puntAcu;
 	}
-	
-	public int getLcrom(){
-		return this.lcrom;
-	}
 
 	public int getnGenes() {
 		return nGenes;
@@ -86,22 +71,6 @@ public abstract class Cromosoma {
 
 	public void setnGenes(int nGenes) {
 		this.nGenes = nGenes;
-	}
-
-	public double getTolerancia() {
-		return tolerancia;
-	}
-
-	public void setTolerancia(double tolerancia) {
-		this.tolerancia = tolerancia;
-	}
-
-	public int getIdFuncion() {
-		return idFuncion;
-	}
-
-	public void setIdFuncion(int idFuncion) {
-		this.idFuncion = idFuncion;
 	}
 
 	public double getPunt() {

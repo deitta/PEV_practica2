@@ -2,6 +2,8 @@ package base;
 
 import metodosCruce.AlgoritmoCruce;
 import metodosCruce.FactoriaCruce;
+import metodosMutacion.AlgoritmoMutacion;
+import metodosMutacion.FactoriaMutacion;
 import metodosSeleccion.AlgoritmoSeleccion;
 import metodosSeleccion.FactoriaSeleccion;
 
@@ -49,22 +51,22 @@ public class AlgoritmoGenetico {
 		elite = new Cromosoma[(int) (tamPob*elitismo)];
 
 		for (int i = 0; i < tamPob; i++)
-			pob[i] = new Cromosoma(tolerancia);
+			pob[i] = new Cromosoma();
 		for (int i = 0; i < (int) (tamPob*elitismo); i++)
-			elite[i] = new Cromosoma(tolerancia);
-		elMejor = new Cromosoma(tolerancia);
+			elite[i] = new Cromosoma();
+		elMejor = new Cromosoma();
 	}
 	
 	public void inicializaPoblacion() {
 		for (int i = 0; i < tamPob; i++) {
-			pob[i] = new Cromosoma(tolerancia);
+			pob[i] = new Cromosoma();
 			pob[i].inicializaCromosoma();
 			pob[i].fitness = pob[i].evaluaCromosoma();
 		}
 		for (int i = 0; i < (int) (tamPob*elitismo); i++)
-			elite[i] = new Cromosoma(tolerancia);
+			elite[i] = new Cromosoma();
 
-		elMejor = new Cromosoma(tolerancia);
+		elMejor = new Cromosoma();
 		elMejor.copiaCromosoma(pob[0]);
 	}
 
@@ -147,7 +149,7 @@ public class AlgoritmoGenetico {
 		Cromosoma[] nuevaPob = new Cromosoma[tamPob];
 		
 		for (int i = 0; i < tamPob; i++)
-			nuevaPob[i] = new Cromosoma(tolerancia);
+			nuevaPob[i] = new Cromosoma();
 		
 		AlgoritmoSeleccion algoSeleccion = FactoriaSeleccion.getAlgoritmoDeSeleccion(seleccion, participantes);
 		algoSeleccion.seleccion(pob, nuevaPob, tamPob);
@@ -163,7 +165,7 @@ public class AlgoritmoGenetico {
 	public void mutacion(){
 		AlgoritmoMutacion algoMutacion;
 		algoMutacion = FactoriaMutacion.getAlgoritmoDeMutacion(mutacion);
-		algoMutacion.Mutacion(pob, tamPob, probMutacion);
+		algoMutacion.mutacion(pob, probMutacion);
 	}
 
 	public void separaElite(int tamElite){
