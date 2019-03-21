@@ -1,4 +1,4 @@
-package mutacion;
+package metodosMutacion;
 
 import base.Cromosoma;
 

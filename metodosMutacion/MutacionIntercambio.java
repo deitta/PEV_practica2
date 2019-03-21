@@ -1,8 +1,8 @@
-package mutacion;
+package metodosMutacion;
 
 import base.Cromosoma;
 
-public class MutacionHeuristica implements AlgoritmoMutacion {
+public class MutacionIntercambio implements AlgoritmoMutacion {
 
 	@Override
 	public void mutacion(Cromosoma ind) {
