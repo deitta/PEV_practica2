@@ -26,7 +26,7 @@ public abstract class Cromosoma {
 	}
 	
 	public void cruzar(Cromosoma padre, int pos) {
-		genes[indGen].insertar(((GenBinario) padre.genes[indGen]).getAlelo(posGen), posGen);
+		genes[indGen].insertar(padre.genes[pos].ciudad, pos);
 	}
 	
 	public void mutar(int valor, int pos) {
