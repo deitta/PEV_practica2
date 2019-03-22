@@ -95,10 +95,9 @@ public class Main extends JFrame {
 	}
 	
 	public ConfigPanel<AlgoritmoGenetico> creaPanelConfiguracion() {
-		String[] seleccion = new String[] { "Ruleta", "Estocastico", "Torneo", "Restos" };
-		String[] cruceBinario = new String[] { "Monopunto", "Uniforme" };
-		String[] cruceReal = new String[] { "Monopunto", "Uniforme", "Aritmetico", "SBX" };
-		Integer[] funcion = new Integer[] { 1, 2, 3, 4, 5 };
+		String[] seleccion = new String[] { "Ruleta", "Torneo", "Restos", "Ranking", "Truncamiento" };
+		String[] cruce = new String[] { "PMX", "OX", "Variante de OX", "CX", "ERX", "Ordinal" };
+		String[] mutacion = new String[] { "Heuristica", "Insercion", "Intercambio", "Inversion" };
 		Double[] elitismo = new Double[] { 0.0, 0.01, 0.02, 0.03 };
 		
 		ConfigPanel<AlgoritmoGenetico> config = new ConfigPanel<AlgoritmoGenetico>();
@@ -114,11 +113,9 @@ public class Main extends JFrame {
 			  .addOption(new IntegerOption<AlgoritmoGenetico>("N", "numero de x para la funcion 4", "nGenes", 1, 1000))
 			  .addOption(new DoubleOption<AlgoritmoGenetico>("% Cruce", "porcentaje de cruce", "probCruce", 0, 1))
 			  .addOption(new DoubleOption<AlgoritmoGenetico>("% Mutacion", "porcentaje de mutacion", "probMutacion", 0, 1))
-			  .addOption(new DoubleOption<AlgoritmoGenetico>("Tolerancia", "nivel de tolerancia o de precision", "tolerancia", 0, 1))
-			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Cruce binario", "metodo de cruce para las funciones de 1 a 4", "cruceBinario", cruceBinario))
-			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Cruce real", "metodo de cruce para la funcion 5", "cruceReal", cruceReal))
-			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Seleccion", "metodo de seleccion", "seleccion", seleccion))  
-			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Funcion", "funcion a estudiar", "idFuncion", funcion))
+			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Cruce", "metodo de cruce para las funciones de 1 a 4", "cruce", cruce))
+			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Seleccion", "metodo de seleccion", "seleccion", seleccion))
+			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Mutacion", "metodo de mutacion", "mutacion", mutacion))
 			  .addOption(new ChoiceOption<AlgoritmoGenetico>("% Elitismo", "porcentaje de la poblacion que forma la elite", "elitismo", elitismo))
 
 			  // y ahora ya cerramos el formulario

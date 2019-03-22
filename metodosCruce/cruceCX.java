@@ -2,7 +2,7 @@ package metodosCruce;
 
 import base.Cromosoma;
 
-public class cruceCX implements AlgoritmoCruce {
+public class CruceCX implements AlgoritmoCruce {
 	public void cruce(Cromosoma[] pob, int tamPob, double probCruce) {
 		Cromosoma hijo1, hijo2;
 		int nGenes = pob[0].getnGenes();

@@ -10,7 +10,7 @@ public class FactoriaCruce {
 			case "ERX": return new CruceERX();
 			case "Ordinal": return new CruceOrdinal();
 			// añadir metodo propio
-			default: return new CrucePMX();
+			default: return new CruceOX();
 		}
 	}
 }

@@ -13,6 +13,7 @@ public class AlgoritmoGenetico {
 	int tamPob;
 	int numMaxGen; //# max de generaciones
 	int posMejor;
+	int nGenes = 27;
 	double probCruce; //si es menor cruza
 	double probMutacion; // si es menor muta
 	double tolerancia;  // precision
@@ -375,6 +376,10 @@ public class AlgoritmoGenetico {
 
 	public Cromosoma getElMejor() {
 		return elMejor;
+	}
+
+	public int getnGenes() {
+		return nGenes;
 	}
 
 	

@@ -6,6 +6,10 @@ public class Gen {
 	public Gen(int ciudad){
 		this.ciudad = ciudad;		
 	}
+	
+	public String fenotipo(){
+		return Ciudades.nombreCiudad(ciudad);
+	}
 
 	public void setCiudad(int ciudad){
 		this.ciudad = ciudad;

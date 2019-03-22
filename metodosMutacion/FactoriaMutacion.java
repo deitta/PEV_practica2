@@ -9,7 +9,7 @@ public class FactoriaMutacion {
 			case "Intercambio": return new MutacionIntercambio();
 			case "Inversion": return new MutacionInversion();
 			// Propio
-			default: return new MutacionHeuristica();
+			default: return new MutacionInsercion();
 		}
 	}
 }
