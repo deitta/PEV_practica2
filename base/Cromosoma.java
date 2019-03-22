@@ -27,7 +27,7 @@ public class Cromosoma {
 			do {
 				ciudad = (int) (Math.random()*nGenes);
 			} while(incluidos[ciudad] || ciudad != 25);
-			genes[i].ciudad = ciudad;
+			genes[i] = new Gen(ciudad);
 			incluidos[ciudad] = true;
 		}
 	}
@@ -40,7 +40,7 @@ public class Cromosoma {
 		int fitness = 0, ciudad = 25;
 
 		for (int i = 0; i < nGenes; i++){
-			fitness += genes[i].distanciaA(ciudad);
+			fitness += Ciudades.distanciaA(genes[i].ciudad, ciudad);
 			ciudad = genes[i].ciudad;
 		}
 
