@@ -1,6 +1,6 @@
 package base;
 
-public abstract class Cromosoma {
+public class Cromosoma {
 	public Gen[] genes;
 	
 	protected double fitness; // aptitud
@@ -9,16 +9,26 @@ public abstract class Cromosoma {
 	
 	private int nGenes = 27;
 	protected double adaptacion;
+	private boolean maximizar = false;
 	
 	public Cromosoma() {
 		this.genes = new Gen[nGenes];
-		for (int i = 0; i < nGenes; i++)
-			genes[i] = new Gen(i);
+		inicializaCromosoma();
 	}
 
 	public void inicializaCromosoma() {
+		int ciudad;
+		boolean incluidos[] = new boolean[nGenes];
+		
+		for (int i = 0; i < nGenes; i++)
+			incluidos[i] = false;
+		
 		for (int i = 0; i < getnGenes(); i++) {
-			genes[i].inicializaGen(); //este rellena los valores de los genes
+			do {
+				ciudad = (int) (Math.random()*nGenes);
+			} while(incluidos[ciudad] || ciudad != 25);
+			genes[i].ciudad = ciudad;
+			incluidos[ciudad] = true;
 		}
 	}
 	
@@ -51,7 +61,9 @@ public abstract class Cromosoma {
 	
 // SET & GET
 
-	public abstract boolean isMaximizar();
+	public boolean isMaximizar(){
+		return maximizar;
+	}
 	
 	public double getFitness(){
 		return this.fitness;
