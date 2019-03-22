@@ -5,12 +5,7 @@ import base.Cromosoma;
 public class MutacionInsercion implements AlgoritmoMutacion {
 
 	@Override
-	public void mutacion(Cromosoma ind) {
-
-
-	}
-
-	public void mutacionInsercion(Cromosoma ind, int tamPob) {
+	public void mutacion(Cromosoma ind, double probMutacion, int tamPob) {
 		boolean mutado;
 		double prob;
 		int genParaMutar;
