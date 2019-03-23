@@ -23,4 +23,8 @@ public class Gen {
 		this.ciudad = gen.ciudad;
 	}
 	
+	// Para la depuracion
+	public String toString(){
+		return Integer.toString(ciudad);
+	}
 }

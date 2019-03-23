@@ -5,9 +5,6 @@ import base.Cromosoma;
 public class CruceCX implements AlgoritmoCruce {
 	public void cruce(Cromosoma[] pob, int tamPob, double probCruce) {
 		Cromosoma hijo1, hijo2;
-		int nGenes = pob[0].getnGenes();
-		double tolerancia = pob[0].getTolerancia();
-		int idFuncion = pob[0].getIdFuncion();
 		int selCruce[] = new int[tamPob]; //seleccionados para reproducir
 		int nSelCruce = 0; //contador seleccionados
 		double prob;
@@ -28,10 +25,15 @@ public class CruceCX implements AlgoritmoCruce {
 
 		// se cruzan los individuos elegidos en un punto al azar. Todos por el mismo punto
 		for (int i = 0; i < nSelCruce; i+=2) {
-			hijo1 = new Cromosoma(idFuncion, tolerancia, nGenes);
-			hijo2 = new Cromosoma(idFuncion, tolerancia, nGenes);
+			hijo1 = new Cromosoma();
+			hijo2 = new Cromosoma();
 			
-			crucePMX(pob[selCruce[i]], pob[selCruce[i+1]], hijo1, hijo2);
+			cruceCX(pob[selCruce[i]], pob[selCruce[i+1]], hijo1, hijo2);
+
+			// se evaluan
+			hijo1.setFitness(hijo1.evaluaCromosoma());
+			hijo2.setFitness(hijo2.evaluaCromosoma());
+			
 			// los nuevos individuos sustituyen a sus progenitores
 			pob[selCruce[i]] = hijo1;
 			pob[selCruce[i+1]] = hijo2;
@@ -39,7 +41,7 @@ public class CruceCX implements AlgoritmoCruce {
 	}
 	
 
-	private void crucePMX(Cromosoma padre1, Cromosoma padre2, Cromosoma hijo1, Cromosoma hijo2) {
+	private void cruceCX(Cromosoma padre1, Cromosoma padre2, Cromosoma hijo1, Cromosoma hijo2) {
 		
 	}
 

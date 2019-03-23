@@ -5,9 +5,6 @@ import base.Cromosoma;
 public class CruceOX implements AlgoritmoCruce {
 	public void cruce(Cromosoma[] pob, int tamPob, double probCruce) {
 		Cromosoma hijo1, hijo2;
-		int nGenes = pob[0].getnGenes();
-		double tolerancia = pob[0].getTolerancia();
-		int idFuncion = pob[0].getIdFuncion();
 		int selCruce[] = new int[tamPob]; //seleccionados para reproducir
 		int nSelCruce = 0; //contador seleccionados
 		double prob;
@@ -28,10 +25,15 @@ public class CruceOX implements AlgoritmoCruce {
 
 		// se cruzan los individuos elegidos en un punto al azar. Todos por el mismo punto
 		for (int i = 0; i < nSelCruce; i+=2) {
-			hijo1 = new Cromosoma(idFuncion, tolerancia, nGenes);
-			hijo2 = new Cromosoma(idFuncion, tolerancia, nGenes);
+			hijo1 = new Cromosoma();
+			hijo2 = new Cromosoma();
 			
 			cruceOX(pob[selCruce[i]], pob[selCruce[i+1]], hijo1, hijo2);
+
+			// se evaluan
+			hijo1.setFitness(hijo1.evaluaCromosoma());
+			hijo2.setFitness(hijo2.evaluaCromosoma());
+			
 			// los nuevos individuos sustituyen a sus progenitores
 			pob[selCruce[i]] = hijo1;
 			pob[selCruce[i+1]] = hijo2;
@@ -40,80 +42,96 @@ public class CruceOX implements AlgoritmoCruce {
 	
 
 	private void cruceOX(Cromosoma padre1, Cromosoma padre2, Cromosoma hijo1, Cromosoma hijo2) {
-		int nGenes = pob[0].getnGenes();
-		int puntDC1 = Math.random*nGenes, puntDC2 = Math.random*nGenes, puntDCAux = puntDC1;
+		int nGenes = padre1.getnGenes();
+		int puntDC1 = (int) (Math.random()*nGenes), puntDC2 = (int) (Math.random()*nGenes), puntDCAux = puntDC1;
 		if (puntDC1 > puntDC2){
 			puntDC1 = puntDC2;
 			puntDC2 = puntDCAux;
 		}
 
 		for (int i = puntDC1; i < puntDC2; i++){
-			hijo1.genes[i].ciudad = padre2.genes[i].ciudad;
-			hijo2.genes[i].ciudad = padre1.genes[i].ciudad;
+			hijo1.genes[i].setCiudad(padre2.genes[i].getCiudad());
+			hijo2.genes[i].setCiudad(padre1.genes[i].getCiudad());
 		}
 
 		boolean conflicto;
-		int ciudad;
+		int ciudad, ind;
 		for (int i = puntDC2; i < nGenes; i++){
 			conflicto = false;
-			ciudad = padre2.genes[i].ciudad;
+			ciudad = padre1.genes[i].getCiudad();
+			ind = i;
 			do {
 				conflicto = false;
 				for (int j = puntDC1; j < i && !conflicto; j++){
-					if (hijo1.genes[j].ciudad == ciudad)
+					if (hijo1.genes[j].getCiudad() == ciudad){
 						conflicto = true;
-					if (conflicto) ciudad = padre2.genes[i].ciudad;
-					else hijo1.genes[j].ciudad = ciudad;
+						ind++;
+					}
+					if (conflicto) ciudad = padre1.genes[ind].getCiudad();
+					else hijo1.genes[j].setCiudad(ciudad);
 				}
 			} while (conflicto);
 
 			conflicto = false;
-			ciudad = padre1.genes[i].ciudad;
+			ciudad = padre2.genes[i].getCiudad();
+			ind = i;
 			do {
 				conflicto = false;
 				for (int j = puntDC1; j < i && !conflicto; j++){
-					if (hijo2.genes[j].ciudad == ciudad)
+					if (hijo2.genes[j].getCiudad() == ciudad){
 						conflicto = true;
-					if (conflicto) ciudad = padre1.genes[i].ciudad;
-					else hijo2.genes[j].ciudad = ciudad;
+						ind++;
+					}
+					if (conflicto) ciudad = padre2.genes[ind].getCiudad();
+					else hijo2.genes[j].setCiudad(ciudad);
 				}
 			} while (conflicto);
 		}
 
 		for (int i = 0; i < puntDC1; i++){
 			conflicto = false;
-			ciudad = padre2.genes[i].ciudad;
+			ciudad = padre1.genes[i].getCiudad();
+			ind = i;
 			do {
 				conflicto = false;
 				for (int j = puntDC1; j < nGenes && !conflicto; j++){
-					if (hijo1.genes[j].ciudad == ciudad)
+					if (hijo1.genes[j].getCiudad() == ciudad){
 						conflicto = true;
-					if (conflicto) ciudad = padre2.genes[i].ciudad;
-					else hijo1.genes[j].ciudad = ciudad;
+						ind++;
+					}
+					if (conflicto) ciudad = padre1.genes[ind].getCiudad();
+					else hijo1.genes[j].setCiudad(ciudad);
 				}
 				for (int j = 0; j < i && !conflicto; j++){
-					if (hijo1.genes[j].ciudad == ciudad)
+					if (hijo1.genes[j].getCiudad() == ciudad){
 						conflicto = true;
-					if (conflicto) ciudad = padre2.genes[i].ciudad;
-					else hijo1.genes[j].ciudad = ciudad;
+						ind = (ind+1)%nGenes;
+					}
+					if (conflicto) ciudad = padre1.genes[ind].getCiudad();
+					else hijo1.genes[j].setCiudad(ciudad);
 				}
 			} while (conflicto);
 
 			conflicto = false;
-			ciudad = padre1.genes[i].ciudad;
+			ciudad = padre2.genes[i].getCiudad();
+			ind = i;
 			do {
 				conflicto = false;
 				for (int j = puntDC1; j < nGenes && !conflicto; j++){
-					if (hijo2.genes[j].ciudad == ciudad)
+					if (hijo2.genes[j].getCiudad() == ciudad){
 						conflicto = true;
-					if (conflicto) ciudad = padre1.genes[i].ciudad;
-					else hijo2.genes[j].ciudad = ciudad;
+						ind++;
+					}
+					if (conflicto) ciudad = padre2.genes[ind].getCiudad();
+					else hijo2.genes[j].setCiudad(ciudad);
 				}
 				for (int j = 0; j < i && !conflicto; j++){
-					if (hijo1.genes[j].ciudad == ciudad)
+					if (hijo1.genes[j].getCiudad() == ciudad){
 						conflicto = true;
-					if (conflicto) ciudad = padre2.genes[i].ciudad;
-					else hijo1.genes[j].ciudad = ciudad;
+						ind = (ind+1)%nGenes;
+					}
+					if (conflicto) ciudad = padre2.genes[ind].getCiudad();
+					else hijo1.genes[j].setCiudad(ciudad);
 				}
 			} while (conflicto);
 		}

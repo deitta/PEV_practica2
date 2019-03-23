@@ -13,7 +13,6 @@ public class AlgoritmoGenetico {
 	int tamPob;
 	int numMaxGen; //# max de generaciones
 	int posMejor;
-	int nGenes = 27;
 	double probCruce; //si es menor cruza
 	double probMutacion; // si es menor muta
 	double tolerancia;  // precision
@@ -39,8 +38,8 @@ public class AlgoritmoGenetico {
 		probMutacion = 0.05;
 		tolerancia = 0.001;
 		seleccion = "Ruleta";
-		cruce = "CX";
-		mutacion = "Heuristica";
+		cruce = "OX";
+		mutacion = "Insercion";
 		participantes = 3;
 		elitismo = 0;
 
@@ -166,7 +165,7 @@ public class AlgoritmoGenetico {
 	public void mutacion(){
 		AlgoritmoMutacion algoMutacion;
 		algoMutacion = FactoriaMutacion.getAlgoritmoDeMutacion(mutacion);
-		algoMutacion.mutacion(pob, probMutacion);
+		algoMutacion.mutacion(pob, probMutacion, tamPob);
 	}
 
 	public void separaElite(int tamElite){
@@ -379,7 +378,7 @@ public class AlgoritmoGenetico {
 	}
 
 	public int getnGenes() {
-		return nGenes;
+		return pob[0].getnGenes();
 	}
 
 	

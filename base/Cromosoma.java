@@ -7,7 +7,7 @@ public class Cromosoma {
 	protected double punt; // puntRelat = aptitud / sumaAptitud
 	protected double puntAcu; // para seleccion
 	
-	private int nGenes = 27;
+	private int nGenes = 26;
 	protected double adaptacion;
 	private boolean maximizar = false;
 	
@@ -18,15 +18,15 @@ public class Cromosoma {
 
 	public void inicializaCromosoma() {
 		int ciudad;
-		boolean incluidos[] = new boolean[nGenes];
+		boolean incluidos[] = new boolean[nGenes+1];
 		
 		for (int i = 0; i < nGenes; i++)
 			incluidos[i] = false;
 		
 		for (int i = 0; i < getnGenes(); i++) {
 			do {
-				ciudad = (int) (Math.random()*nGenes);
-			} while(incluidos[ciudad] || ciudad != 25);
+				ciudad = (int) (Math.random()*(nGenes + 1));
+			} while(incluidos[ciudad] || ciudad == 25);
 			genes[i] = new Gen(ciudad);
 			incluidos[ciudad] = true;
 		}
@@ -91,7 +91,13 @@ public class Cromosoma {
 
 	// Para la depuracion
 	public String toString(){
-		return "(Adap: " + String.format("%.3f", adaptacion) + ", Fit: " + String.format("%.3f", fitness) + ")";
+		String cromosoma = "(Adap: " + String.format("%.3f", adaptacion) + ", Fit: " + String.format("%.3f", fitness) + ")\n";
+		for (int i = 0; i < nGenes - 1; i++){
+			cromosoma += '[' + Integer.toString(i) + "] " + this.genes[i].toString() + ", ";
+			if ((i+1) % 10 == 0) cromosoma += "\n";
+		}
+		cromosoma += '[' + Integer.toString(nGenes - 1) + "] " + this.genes[nGenes - 1].toString();
+		return cromosoma;
 	}
 }
 

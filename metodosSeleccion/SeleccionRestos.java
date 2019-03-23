@@ -1,7 +1,6 @@
 package metodosSeleccion;
 
 import base.Cromosoma;
-import cromosoma.FactoriaCromosoma;
 
 public class SeleccionRestos implements AlgoritmoSeleccion {
 
@@ -17,13 +16,10 @@ public class SeleccionRestos implements AlgoritmoSeleccion {
 		faltantes = tamPob-tamNuevaPob;
 
 		if(faltantes > 0){
-			int nGenes = pob[0].getnGenes();
-			double tolerancia = pob[0].getTolerancia();
-			int idFuncion = pob[0].getIdFuncion();
 			Cromosoma[] pobFaltantes = new Cromosoma[tamPob];
 			
 			for (int i = 0; i < faltantes; i++)
-				pobFaltantes[i] = new Cromosoma(idFuncion, tolerancia, nGenes);
+				pobFaltantes[i] = new Cromosoma();
 			
 			AlgoritmoSeleccion algoSeleccion = FactoriaSeleccion.getAlgoritmoDeSeleccion("Ruleta", 0);
 			algoSeleccion.seleccion(pob, pobFaltantes, tamPob);
