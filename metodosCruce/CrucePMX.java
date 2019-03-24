@@ -4,47 +4,48 @@ import base.Cromosoma;
 
 public class CrucePMX implements AlgoritmoCruce {
 	public void cruce(Cromosoma[] pob, int tamPob, double probCruce) {
-		Cromosoma hijo1, hijo2;
-		int selCruce[] = new int[tamPob]; //seleccionados para reproducir
-		int nSelCruce = 0; //contador seleccionados
-		double prob;
+		int nGenes = padre1.getnGenes();
+		int puntDC1 = (int) (Math.random() * (nGenes - 1)); //0 incluido y ngenes-1 no(ultima pos no incluida)
+		int puntDC2 = (int) (Math.random() * (nGenes) + (pos1 + 1)); //pos1+1 incluido y ngenes no (ultima pos incluida)
 
-		//Se eligen los individuos a cruzar
-		for (int i = 0; i < tamPob; i++) {
-			prob = Math.random(); //se generan tam_pob números aleatorios en [0 1)
-			//se eligen los individuos de las posiciones i si prob < probCruce
-			if (prob < probCruce){
-				selCruce[nSelCruce] = i;
-				nSelCruce++;
-			}
+		for (int i = puntDC1; i <= puntDC2; i++){
+			hijo1.genes[i].setCiudad(padre2.genes[i].getCiudad());
+			hijo2.genes[i].setCiudad(padre1.genes[i].getCiudad());
 		}
 
-		// el numero de seleccionados se hace par
-		if ((nSelCruce % 2) == 1)
-			nSelCruce--;
+		boolean conflicto = false;
+		// indices de las posiciones donde no hay conflicto para hijo1 e hijo2 repectivamente
+		int indP1 = puntDC2 + 1, indP2 = puntDC2 + 1, j;
+		// rellena las posiciones del hijo en orden puntDC2 -> nGenes y de 0 -> puntDC1
+		for (int i = puntDC2 + 1; i >= puntDC2 || i < puntDC1; i = (i+1) % nGenes) {
+			do {
+				j = puntDC1; //para recorrer el array entre los puntDC
+				do{
+					conflicto = hijo1.genes[j].getCiudad() == padre1.genes[indP1].getCiudad();
+					j = (j+1) % nGenes;
+				}while(!conflicto && j != i);
+				// si hay conflicto pasamos a la siguiente ciudad
+				if (conflicto) {
+					indP1 = (indP1+1) % nGenes;
+					i++;
+				}
+			} while (conflicto);
+			hijo1.genes[i].setCiudad(padre1.genes[indP1].getCiudad());
 
-		// se cruzan los individuos elegidos en un punto al azar. Todos por el mismo punto
-		for (int i = 0; i < nSelCruce; i+=2) {
-			hijo1 = new Cromosoma();
-			hijo2 = new Cromosoma();
-
-			crucePMX(pob[selCruce[i]], pob[selCruce[i+1]], hijo1, hijo2);
-
-			// se evaluan
-			hijo1.setFitness(hijo1.evaluaCromosoma());
-			hijo2.setFitness(hijo2.evaluaCromosoma());
-
-			// los nuevos individuos sustituyen a sus progenitores
-			pob[selCruce[i]] = hijo1;
-			pob[selCruce[i+1]] = hijo2;
+			// lo mismo de antes pero para el hijo2
+			do {
+				j = puntDC1;
+				do {
+					conflicto = hijo2.genes[j].getCiudad() == padre2.genes[indP2].getCiudad();
+					j = (j+1) % nGenes;
+				} while (!conflicto && j != i);
+				if (conflicto) {
+					indH2 = (indH2+1) % nGenes;
+					i++;
+				}
+			} while (conflicto);
+			hijo2.genes[i].setCiudad(padre2.genes[indP2].getCiudad());
 		}
-	}
-
-
-	private void crucePMX(Cromosoma padre1, Cromosoma padre2, Cromosoma hijo1, Cromosoma hijo2) {
-			int nGenes = padre1.getnGenes();
-			int pos1 = (int) (Math.random() * (nGenes - 1)); //0 incluido y ngenes-1 no(ultima pos no incluida)
-			int pos2 = (int) (Math.random() * (nGenes) + (pos1 + 1)); //pos1+1 incluido y ngenes no (ultima pos incluida)
 
 	}
 }
