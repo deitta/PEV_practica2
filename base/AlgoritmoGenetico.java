@@ -159,7 +159,7 @@ public class AlgoritmoGenetico {
 	public void cruce(){
 		AlgoritmoCruce algoCruce;
 		algoCruce = FactoriaCruce.getAlgoritmoDeCruce(cruce);
-		algoCruce.cruce(pob, tamPob, probCruce);
+		algoCruce.cruceBase(pob, tamPob, probCruce);
 	}
 	
 	public void mutacion(){
@@ -217,7 +217,7 @@ public class AlgoritmoGenetico {
 	}
 
 	private void media(int generacion){
-		double sumaAbs = 0;
+		int sumaAbs = 0;
 
 		for (int i = 0; i < tamPob; i++)
 			sumaAbs += pob[i].fitness;

@@ -85,7 +85,7 @@ public class Main extends JFrame {
 				plot.addLinePlot("mejor de la generacion", x, AG.getGenMejor());
 				plot.addLinePlot("media de la generacion", x, AG.getGenMedia());
 				
-				resultado.setText(" Mejor resultado: " + AG.getElMejor().getFitness());
+				resultado.setText(" Mejor resultado: " + (int) AG.getElMejor().getFitness());
 				for (int i = 0; i < AG.getnGenes()/2; i++){
 					listaCiudades += AG.getElMejor().genes[i].fenotipo();
 					listaCiudades += ", ";
