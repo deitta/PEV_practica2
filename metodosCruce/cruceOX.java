@@ -44,6 +44,7 @@ public class CruceOX implements AlgoritmoCruce {
 	private void cruceOX(Cromosoma padre1, Cromosoma padre2, Cromosoma hijo1, Cromosoma hijo2) {
 		int nGenes = padre1.getnGenes();
 		int puntDC1 = (int) (Math.random()*nGenes), puntDC2 = (int) (Math.random()*nGenes), puntDCAux = puntDC1;
+		if (puntDC1 == puntDC2) puntDC2 = (puntDC2+1) % nGenes;
 		if (puntDC1 > puntDC2){
 			puntDC1 = puntDC2;
 			puntDC2 = puntDCAux;
@@ -67,10 +68,13 @@ public class CruceOX implements AlgoritmoCruce {
 					conflicto = hijo1.genes[j].getCiudad() == padre1.genes[indH1].getCiudad();
 					j = (j+1) % nGenes;
 				} while (!conflicto && j != i);
+				// si hay conflicto pasamos a la siguiente ciudad
 				if (conflicto) indH1 = (indH1+1) % nGenes;
 			} while (conflicto);
+			// añadimos a hijo1 -> ciudad[i] la primera ciudad del padre que no presenta conflicto
 			hijo1.genes[i].setCiudad(padre1.genes[indH1].getCiudad());
 
+			// lo mismo de antes pero para el hijo2
 			do {
 				j = puntDC1;
 				do {

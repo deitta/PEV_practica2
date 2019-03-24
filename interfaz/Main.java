@@ -27,8 +27,11 @@ public class Main extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		JPanel panelCentral = new JPanel(new BorderLayout());
-		JPanel panelAuxiliar = new JPanel(new BorderLayout());
+		JPanel panelConfig = new JPanel(new BorderLayout());
+		JPanel panelResultados = new JPanel(new BorderLayout());
 		add(panelCentral, BorderLayout.CENTER);
+		add(panelConfig, BorderLayout.WEST);
+		add(panelResultados, BorderLayout.PAGE_END);
 //		nononononono
 		Plot2DPanel plot = new Plot2DPanel();
 		plot.setAxisLabels("Generacion", "Fitness");
@@ -41,7 +44,7 @@ public class Main extends JFrame {
 		final ConfigPanel<AlgoritmoGenetico> cp = creaPanelConfiguracion();
 		cp.setTarget(AG); // asocia el panel con el AG
 		cp.initialize(); // carga los valores del AG en el panel
-		add(cp, BorderLayout.WEST);
+		panelConfig.add(cp, BorderLayout.NORTH);
 		
 		// crea una etiqueta que dice si todo es valido
 		final String textoTodoValido = "Todos los campos OK";
@@ -56,18 +59,19 @@ public class Main extends JFrame {
 		});
 		add(valido, BorderLayout.SOUTH);
 
-		final JLabel resultado = new JLabel("     Mejor resultado: ");
-		final JLabel exiss = new JLabel("     Valores de las x:                  ");
-		panelAuxiliar.add(resultado, BorderLayout.CENTER);
-		panelAuxiliar.add(exiss, BorderLayout.EAST);
+		final JLabel resultado = new JLabel(" Mejor resultado: ");
+		final JLabel ciudades1 = new JLabel(" Recorrido:");
+		final JLabel ciudades2 = new JLabel("");
+		panelResultados.add(resultado, BorderLayout.SOUTH);
+		panelResultados.add(ciudades1, BorderLayout.NORTH);
+		panelResultados.add(ciudades2, BorderLayout.CENTER);
 		
-		JButton boton;
-		// crea botones para mostrar el estado de las figuras por consola
-		boton = new JButton("Calcula grafica");
+		// crea botones para calcular y mostrar el resultado del algoritmo
+		JButton boton = new JButton("Calcula grafica");
 		boton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String xString = " ";
+				String listaCiudades = " ";
 				plot.removeAllPlots();
 				AG.AlgoritmoGeneticoFuncion();
 				// define the legend position
@@ -80,18 +84,26 @@ public class Main extends JFrame {
 				plot.addLinePlot("mejor de todas las generaciones", x, AG.getMejorAbsoluto());
 				plot.addLinePlot("mejor de la generacion", x, AG.getGenMejor());
 				plot.addLinePlot("media de la generacion", x, AG.getGenMedia());
-				resultado.setText("     Mejor resultado: " + AG.getElMejor().getFitness());
-				for (int i = 0; i < AG.getnGenes(); i++){
-					xString += String.format("%.3f", AG.getElMejor().genes[i].fenotipo());
-					if (i != AG.getnGenes() - 1) xString += "; ";
+				
+				resultado.setText(" Mejor resultado: " + AG.getElMejor().getFitness());
+				for (int i = 0; i < AG.getnGenes()/2; i++){
+					listaCiudades += AG.getElMejor().genes[i].fenotipo();
+					listaCiudades += ", ";
 				}
-				exiss.setText("     Valores de las x: " + xString);
+				ciudades1.setText(" Recorrido: Madrid," + listaCiudades);
+				
+				listaCiudades = "                      ";
+				for (int i = AG.getnGenes()/2; i < AG.getnGenes(); i++){
+					listaCiudades += AG.getElMejor().genes[i].fenotipo();
+					if (i != AG.getnGenes() - 1) listaCiudades += ", ";
+				}
+				ciudades2.setText(listaCiudades);
 			}
 		});
-		panelAuxiliar.add(boton, BorderLayout.WEST);
 
-		panelCentral.add(panelAuxiliar, BorderLayout.SOUTH);
-		panelCentral.add(plot);
+		panelConfig.add(boton, BorderLayout.PAGE_END);
+
+		// panelCentral.add(plot);
 	}
 	
 	public ConfigPanel<AlgoritmoGenetico> creaPanelConfiguracion() {
