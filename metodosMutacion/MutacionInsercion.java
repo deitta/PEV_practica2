@@ -12,12 +12,10 @@ public class MutacionInsercion implements AlgoritmoMutacion {
 		for (int i = 0; i < tamPob; i++) {
 			mutado = false;
 			for (int j = 1; j < pob[0].getnGenes(); j++) {
-				// se genera un numero aleatorio entre [0 1]
-				prob = Math.random();
-				// mutan los genes con prob<probMutacion
-				if (prob < probMutacion){
-					genParaMutar = pob[i].genes[i].getCiudad();
-					pos = (int) (Math.random() * (j-1)); //entre 0 incluido y la j-1
+				prob = Math.random();	// se genera un numero aleatorio entre [0 1]
+				if (prob < probMutacion){// mutan los genes con prob<probMutacion
+					genParaMutar = pob[i].genes[j].getCiudad();
+					pos = (int) (Math.random() * (j)); //entre 0 incluido y la j no
 					for(int k = j; k > pos; k--)
 						pob[i].genes[k].setCiudad(pob[i].genes[k-1].getCiudad());
 					pob[i].genes[pos].setCiudad(genParaMutar);
