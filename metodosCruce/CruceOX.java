@@ -45,7 +45,7 @@ public class CruceOX implements AlgoritmoCruce {
 				} while (!conflicto && j != i);
 				if (conflicto) indP2 = (indP2+1) % nGenes;
 			} while (conflicto);
-			hijo2.genes[j].setCiudad(padre2.genes[indP2].getCiudad());
+			hijo2.genes[i].setCiudad(padre2.genes[indP2].getCiudad());
 		}
 	}
 }
