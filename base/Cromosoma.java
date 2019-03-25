@@ -32,6 +32,7 @@ public class Cromosoma {
 		}
 	}
 	
+	// creo que sobra
 	public void insertar(int ciudad, int pos) {
 		this.genes[pos].ciudad = ciudad;
 	}
