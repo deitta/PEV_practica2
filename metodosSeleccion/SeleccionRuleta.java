@@ -17,7 +17,7 @@ public class SeleccionRuleta implements AlgoritmoSeleccion {
 		}
 		
 		for(int i = 0; i < tamPob; i++) {
-			nuevaPob[i] = pob[selSuper[i]];
+			nuevaPob[i].copiaCromosoma(pob[selSuper[i]]);
 		}
 	}
 	

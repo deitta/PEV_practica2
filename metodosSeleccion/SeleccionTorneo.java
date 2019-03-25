@@ -15,16 +15,16 @@ public class SeleccionTorneo implements AlgoritmoSeleccion {
 		Cromosoma mejor = new Cromosoma();
 		
 		for(int i = 0; i < tamPob; i++){
-			posMejor = 0;
-			mejor = pob[((int) (Math.random() * tamPob))];
+			posMejor = ((int) (Math.random() * tamPob));
+			mejor = pob[posMejor];
 			for (int j = 1; j < nParticipantes; j++){
 				participante = ((int) (Math.random() * tamPob)); // si el azar lo quiere puede haber varios participantes iguales
-				if (pob[participante].getFitness() > pob[posMejor].getFitness()){
+				if (pob[participante].getAdptacion() > pob[posMejor].getAdptacion()){
 					posMejor = participante;
 					mejor = pob[participante];
 				}
 			}
-			nuevaPob[i] = mejor;
+			nuevaPob[i].copiaCromosoma(mejor);
 		}
 	}
 	

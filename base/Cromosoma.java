@@ -100,5 +100,9 @@ public class Cromosoma {
 		cromosoma += '[' + Integer.toString(nGenes - 1) + "] " + this.genes[nGenes - 1].toString();
 		return cromosoma;
 	}
+
+	public double getAdptacion() {
+		return adaptacion;
+	}
 }
 
