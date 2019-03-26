@@ -15,15 +15,15 @@ public class MutacionInversion implements AlgoritmoMutacion {
 			mutado = false;
 			prob = Math.random();	// se genera un numero aleatorio entre [0 1]
 			if (prob < probMutacion){	// mutan los genes con prob<probMutacion
-				puntDC1 = (int) (Math.random()*nGenes), puntDC2 = (int) (Math.random()*nGenes), puntDCAux = puntDC1;
+				puntDC1 = (int) (Math.random()*nGenes); puntDC2 = (int) (Math.random()*nGenes); puntDCAux = puntDC1;
 				if (puntDC1 > puntDC2){
 					puntDC1 = puntDC2;
 					puntDC2 = puntDCAux;
 				}
 				for (int j = puntDC1; j <= puntDC2/2; j++) {
-					aux = pob[i].genes[puntDC2];
+					aux = pob[i].genes[puntDC2].getCiudad();
 					pob[i].genes[puntDC2] = pob[i].genes[j];
-					pob[i].genes[j] = aux;
+					pob[i].genes[j].setCiudad(aux);
 					puntDC2--;
 				}
 			mutado = true;

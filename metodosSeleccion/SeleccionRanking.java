@@ -21,17 +21,17 @@ public class SeleccionRanking implements AlgoritmoSeleccion {
 		nuevaPob[0].copiaCromosoma(pobOrdenada.get(0)); nuevaPob[1].copiaCromosoma(pobOrdenada.get(1));
 		numOfParents = 2;
 		fitnessSegments = pobRanking(tamPob);
-		double entireSegment = fitnessSegments[fitnessSegments.length - 1]
+		double entireSegment = fitnessSegments[fitnessSegments.length - 1];
 		while(numOfParents < nuevaPob.length){
 			double x = (double)(Math.random()* entireSegment);
 			if(x <= fitnessSegments[0]){
-				nuevaPob[numOfParents] = pobOrdenada[0];
+				nuevaPob[numOfParents] = pobOrdenada.get(0);
 				numOfParents++;
 			}
 			else
-				for(int i = 1; i < nuevaPob-length;i++){
+				for(int i = 1; i < nuevaPob.length;i++){
 					if(x > fitnessSegments[i-1] && x <=fitnessSegments[i]){
-						nuevaPob[numOfParents].copiaCromosoma(pobOrdenada[i]);
+						nuevaPob[numOfParents].copiaCromosoma(pobOrdenada.get(i));
 						numOfParents++;
 					}
 				}
