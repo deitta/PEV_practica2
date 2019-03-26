@@ -36,7 +36,7 @@ public class CrucePMX implements AlgoritmoCruce {
 
 
 	private int funcionaux(int num, int puntDC1, int puntDC2, Cromosoma cromosoma){
-		while(num != cromosoma.genes[puntDC1].getCiudad && puntDC1 <= puntDC2)
+		while(num != cromosoma.genes[puntDC1].getCiudad() && puntDC1 <= puntDC2)
 			puntDC1++;
 		if (puntDC1 > puntDC2) return -1;
 		return puntDC1;
