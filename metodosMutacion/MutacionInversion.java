@@ -20,17 +20,28 @@ public class MutacionInversion implements AlgoritmoMutacion {
 					puntDC1 = puntDC2;
 					puntDC2 = puntDCAux;
 				}
-				for (int j = puntDC1; j <= puntDC2/2; j++) {
+				
+				int medio = (puntDC2+puntDC1)/2;
+				for (int j = puntDC1; j <= medio; j++){
 					aux = pob[i].genes[puntDC2].getCiudad();
-					pob[i].genes[puntDC2] = pob[i].genes[j];
+					pob[i].genes[puntDC2].setCiudad(pob[i].genes[j].getCiudad());
 					pob[i].genes[j].setCiudad(aux);
 					puntDC2--;
 				}
-			mutado = true;
+				mutado = true;
 			}
 			if (mutado)
 				pob[i].setFitness(pob[i].evaluaCromosoma());
 		}
+		
 	}
-
+	
+//	public static void main(String[] args) {
+//		int tamano = 2;
+//		Cromosoma[] pob = new Cromosoma[tamano];
+//		pob[0] = new Cromosoma();
+//		pob[1] = new Cromosoma();
+//		double probmut = 0.7;
+//		new MutacionInversion().mutacion(pob, probmut, tamano);
+//	}
 }

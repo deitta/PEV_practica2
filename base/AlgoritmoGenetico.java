@@ -280,13 +280,6 @@ public class AlgoritmoGenetico {
 	}
 
 
-
-
-
-
-
-
-
 	//Getters and setters
 
 	public double[] getGenMedia() {
@@ -391,8 +384,6 @@ public class AlgoritmoGenetico {
 
 
 
-
-
 	// Para depurar
 	public String toString(){
 		String agString = "Elite: ";
@@ -404,7 +395,6 @@ public class AlgoritmoGenetico {
 		for (int i = 0; i < pob.length - 1; i++)
 			agString += pob[i].toString() + ", ";
 		if (pob.length - 1 >= 0) agString += pob[pob.length - 1].toString() + "\nEl mejor: " + elMejor.toString();
-
 
 		return agString;
 	}

@@ -7,7 +7,7 @@ public class Cromosoma {
 	protected double punt; // puntRelat = aptitud / sumaAptitud
 	protected double puntAcu; // para seleccion
 	
-	private int nGenes = 26;
+	private int nGenes = 9; //con 26 sale error en sel.ranking (no estoy segura)
 	protected double adaptacion;
 	private boolean maximizar = false;
 	
@@ -25,7 +25,7 @@ public class Cromosoma {
 		
 		for (int i = 0; i < getnGenes(); i++) {
 			do {
-				ciudad = (int) (Math.random()*(nGenes + 1));
+				ciudad = (int) (Math.random()*(nGenes)); //NO HACE FALTA NGENES+1 PORQUE SINO TENDRIAMOS 1 NUM DE GEN MAS
 			} while(incluidos[ciudad] || ciudad == 25);
 			genes[i] = new Gen(ciudad);
 			incluidos[ciudad] = true;
@@ -98,6 +98,7 @@ public class Cromosoma {
 			if ((i+1) % 10 == 0) cromosoma += "\n";
 		}
 		cromosoma += '[' + Integer.toString(nGenes - 1) + "] " + this.genes[nGenes - 1].toString();
+
 		return cromosoma;
 	}
 
