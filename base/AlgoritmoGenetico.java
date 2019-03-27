@@ -272,9 +272,7 @@ public class AlgoritmoGenetico {
 			mejor(generacionActual);
 			mejorAbs(generacionActual);
 
-			if(generacionActual > 0 && genMedia[generacionActual] > genMedia[generacionActual - 1])
-				generacionActual++;
-			else if(generacionActual == 0)
+			if(genMedia[generacionActual] > genMedia[generacionActual - 1])
 				generacionActual++;
 		}
 	}

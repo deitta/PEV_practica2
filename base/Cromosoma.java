@@ -7,7 +7,7 @@ public class Cromosoma {
 	protected double punt; // puntRelat = aptitud / sumaAptitud
 	protected double puntAcu; // para seleccion
 	
-	private int nGenes = 9; //con 26 sale error en sel.ranking (no estoy segura)
+	private int nGenes = 26;
 	protected double adaptacion;
 	private boolean maximizar = false;
 	
