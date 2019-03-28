@@ -58,6 +58,9 @@ public class AlgoritmoGenetico {
 	}
 	
 	public void inicializaPoblacion() {
+		pob = new Cromosoma[tamPob];
+		elite = new Cromosoma[(int) (tamPob*elitismo)];
+
 		for (int i = 0; i < tamPob; i++) {
 			pob[i] = new Cromosoma();
 			pob[i].inicializaCromosoma();
