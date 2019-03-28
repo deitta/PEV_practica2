@@ -16,7 +16,7 @@ public class AlgoritmoGenetico {
 	double probCruce; //si es menor cruza
 	double probMutacion; // si es menor muta
 	double tolerancia;  // precision
-	
+
 	String seleccion;
 	String cruce;
 	String mutacion;
@@ -29,7 +29,7 @@ public class AlgoritmoGenetico {
 	double[] genMedia; //rojo
 	double[] genMejor; //verde
 	double[] mejorAbsoluto; //azul
-	
+
 	public AlgoritmoGenetico() {
 		tamPob = 100;
 		numMaxGen = 100;
@@ -56,7 +56,7 @@ public class AlgoritmoGenetico {
 			elite[i] = new Cromosoma();
 		elMejor = new Cromosoma();
 	}
-	
+
 	public void inicializaPoblacion() {
 		pob = new Cromosoma[tamPob];
 		elite = new Cromosoma[(int) (tamPob*elitismo)];
@@ -74,9 +74,9 @@ public class AlgoritmoGenetico {
 	}
 
 	public void evalua(){
-		double puntAcu = 0; // puntuación acumulada
+		double puntAcu = 0; // puntuaciï¿½n acumulada
 		double sumaAptitud = 0; // suma de la aptitud
-		
+
 		sumaAptitud = pob[0].adaptacion;
 		posMejor = 0;
 		for (int i = 1; i < tamPob; i++){
@@ -107,7 +107,7 @@ public class AlgoritmoGenetico {
 				fmax = elite[i].fitness;
 		if (elMejor.fitness > fmax)
 			fmax = elMejor.fitness;
-		
+
 		fmax *= 1.05; // margen para evitar suma adaptacion = 0
 
 		// adapta la poblacion
@@ -133,7 +133,7 @@ public class AlgoritmoGenetico {
 				fmin = elite[i].fitness;
 		if (elMejor.fitness < fmin)
 			fmin = elMejor.fitness;
-		
+
 		fmin = Math.abs(fmin * 1.05); // margen para evitar suma adaptacion = 0
 
 		// adapta la poblacion
@@ -147,24 +147,24 @@ public class AlgoritmoGenetico {
 		// adapta el mejor
 		elMejor.adaptacion = elMejor.fitness + fmin;
 	}
-	
+
 	public void seleccion(){
 		Cromosoma[] nuevaPob = new Cromosoma[tamPob];
-		
+
 		for (int i = 0; i < tamPob; i++)
 			nuevaPob[i] = new Cromosoma();
-		
+
 		AlgoritmoSeleccion algoSeleccion = FactoriaSeleccion.getAlgoritmoDeSeleccion(seleccion, participantes);
 		algoSeleccion.seleccion(pob, nuevaPob, tamPob);
 		pob = nuevaPob;
 	}
-	
+
 	public void cruce(){
 		AlgoritmoCruce algoCruce;
 		algoCruce = FactoriaCruce.getAlgoritmoDeCruce(cruce);
 		algoCruce.cruceBase(pob, tamPob, probCruce);
 	}
-	
+
 	public void mutacion(){
 		AlgoritmoMutacion algoMutacion;
 		algoMutacion = FactoriaMutacion.getAlgoritmoDeMutacion(mutacion);
@@ -196,7 +196,7 @@ public class AlgoritmoGenetico {
 		// indices en pob de los peores de la poblacion
 		int[] pobPeores = new int[tamElite];
 		int posMejor = 0; // apunta al mejor individuo dentro de pobPeores
-		
+
 		// coge a los primeros de la poblacion como a los peores
 		// y buscamos el mejor dentro de los peores
 		for (int i = 0; i < tamElite; i++){
@@ -244,21 +244,21 @@ public class AlgoritmoGenetico {
 			else mejorAbsoluto[generacion] = mejorAbsoluto[generacion-1];
 		}
 	}
-	
+
 	public void AlgoritmoGeneticoFuncion(){
 		int generacionActual = 0;
 		int tamElite = (int) (tamPob*elitismo);
-		
+
 		inicializaPoblacion();
 
 		if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
 		else adaptarMinimizacion(tamElite);
-		
+
 		evalua();
-		
+
 		while (generacionActual < numMaxGen) {
 			if (tamElite > 0) separaElite(tamElite);
-			
+
 			seleccion();
 			cruce();
 			mutacion();
@@ -269,17 +269,18 @@ public class AlgoritmoGenetico {
 			else adaptarMinimizacion(tamElite);
 
 			evalua();
-			
+
 			// para las graficas
 			media(generacionActual);
 			mejor(generacionActual);
 			mejorAbs(generacionActual);
 
-			generacionActual++;
+			if(generacionActual > 0 && genMedia[generacionActual] > genMedia[generacionActual - 1])
+				generacionActual++;
+			else if(generacionActual == 0)
+				generacionActual++;
 		}
 	}
-
-
 
 
 	//Getters and setters
@@ -367,7 +368,7 @@ public class AlgoritmoGenetico {
 	public void setTamPob(int tamPob) {
 		this.tamPob = tamPob;
 	}
-	
+
 	public double getElitismo() {
 		return elitismo;
 	}
@@ -384,9 +385,7 @@ public class AlgoritmoGenetico {
 		return pob[0].getnGenes();
 	}
 
-	
-	
-	
+
 
 	// Para depurar
 	public String toString(){
@@ -399,8 +398,7 @@ public class AlgoritmoGenetico {
 		for (int i = 0; i < pob.length - 1; i++)
 			agString += pob[i].toString() + ", ";
 		if (pob.length - 1 >= 0) agString += pob[pob.length - 1].toString() + "\nEl mejor: " + elMejor.toString();
-		
-		
+
 		return agString;
 	}
 }

@@ -18,10 +18,13 @@ public class MutacionHeuristica implements AlgoritmoMutacion {
 				prob = Math.random();
 				// mutan los genes con prob<probMutacion
 				if (prob < probMutacion)
-					elementos = pob[i].genes[j].getCiudad;
+					elementos[j] = pob[i].genes[j].getCiudad();
 			}
-		 numPermutaciones	= factorial(elementos.length());
-
+		 numPermutaciones = factorial(elementos.length);
+//
+//		 
+//		 
+//		 
 
 			if (mutado)
 				pob[i].setFitness(pob[i].evaluaCromosoma());
@@ -29,14 +32,10 @@ public class MutacionHeuristica implements AlgoritmoMutacion {
 
 	}
 
-
-
-
-
 	public static int factorial(int numero){
     if ( numero <= 1 )
         return 1;
     else
         return numero*factorial(numero-1);
-  }
+    }
 }
