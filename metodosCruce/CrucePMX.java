@@ -19,11 +19,11 @@ public class CrucePMX implements AlgoritmoCruce {
 		for (int i = (puntDC2 + 1) % nGenes; i >= puntDC2 || i < puntDC1; i = (i+1) % nGenes) {
 			//para el hijo1
 			int pos = funcionaux(padre1.genes[i].getCiudad(), puntDC1, puntDC2, hijo1);
-			
 			if(pos == -1)
 				hijo1.genes[i].setCiudad(padre1.genes[i].getCiudad());
 			else
 				hijo1.genes[i].setCiudad(padre1.genes[pos].getCiudad());
+			
 			//para el hijo2
 			pos = funcionaux(padre2.genes[i].getCiudad(), puntDC1, puntDC2, hijo2);
 			if(pos == -1)
@@ -35,10 +35,10 @@ public class CrucePMX implements AlgoritmoCruce {
 		}
 	}
 
-	private int funcionaux(int num, int puntDC1, int puntDC2, Cromosoma cromosoma){
-		while( puntDC1 <= puntDC2 && num != cromosoma.genes[puntDC1].getCiudad())
-			puntDC1++;
-		if (puntDC1 > puntDC2) return -1;
-		return puntDC1;
+	private int funcionaux(int ciudad, int pos, int puntDC2, Cromosoma cromosoma){
+		while(pos <= puntDC2 && ciudad != cromosoma.genes[pos].getCiudad())
+			pos++;
+		if (pos > puntDC2) return -1;
+		return pos;
 	}
 }

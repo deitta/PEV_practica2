@@ -110,6 +110,7 @@ public class Main extends JFrame {
 		String[] seleccion = new String[] { "Ruleta", "Torneo", "Restos", "Ranking", "Truncamiento" };
 		String[] cruce = new String[] { "PMX", "OX", "Variante de OX", "CX", "ERX", "Ordinal" };
 		String[] mutacion = new String[] { "Heuristica", "Insercion", "Intercambio", "Inversion" };
+		String[] contractividad = new String[] { "False", "True" };
 		Double[] elitismo = new Double[] { 0.0, 0.01, 0.02, 0.03 };
 		
 		ConfigPanel<AlgoritmoGenetico> config = new ConfigPanel<AlgoritmoGenetico>();
@@ -122,13 +123,13 @@ public class Main extends JFrame {
 				1, 1000)) // min y max
 			  .addOption(new IntegerOption<AlgoritmoGenetico>("Generaciones", "numero de generaciones", "numMaxGen", 1, 1000))
 			  .addOption(new IntegerOption<AlgoritmoGenetico>("Participantes", "numero de participantes para el metodo de seleccion", "participantes", 0, 100))
-			  .addOption(new IntegerOption<AlgoritmoGenetico>("N", "numero de x para la funcion 4", "nGenes", 1, 1000))
 			  .addOption(new DoubleOption<AlgoritmoGenetico>("% Cruce", "porcentaje de cruce", "probCruce", 0, 1))
 			  .addOption(new DoubleOption<AlgoritmoGenetico>("% Mutacion", "porcentaje de mutacion", "probMutacion", 0, 1))
 			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Cruce", "metodo de cruce para las funciones de 1 a 4", "cruce", cruce))
 			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Seleccion", "metodo de seleccion", "seleccion", seleccion))
 			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Mutacion", "metodo de mutacion", "mutacion", mutacion))
 			  .addOption(new ChoiceOption<AlgoritmoGenetico>("% Elitismo", "porcentaje de la poblacion que forma la elite", "elitismo", elitismo))
+			  .addOption(new ChoiceOption<AlgoritmoGenetico>("Contractividad", "activa/desactiva la contractividad", "contractividad", contractividad))
 
 			  // y ahora ya cerramos el formulario
 		  	  .endOptions();

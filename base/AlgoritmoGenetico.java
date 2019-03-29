@@ -21,6 +21,7 @@ public class AlgoritmoGenetico {
 	String cruce;
 	String mutacion;
 	int participantes;
+	
 	double elitismo; // elitismo*tamPob = tamElite
 	Cromosoma[] elite;
 
@@ -29,6 +30,8 @@ public class AlgoritmoGenetico {
 	double[] genMedia; //rojo
 	double[] genMejor; //verde
 	double[] mejorAbsoluto; //azul
+
+	boolean contractividad;
 
 	public AlgoritmoGenetico() {
 		tamPob = 100;
@@ -42,6 +45,7 @@ public class AlgoritmoGenetico {
 		mutacion = "Insercion";
 		participantes = 3;
 		elitismo = 0;
+		contractividad = false;
 
 		genMedia = new double[numMaxGen];
 		genMejor = new double[numMaxGen];
@@ -74,7 +78,7 @@ public class AlgoritmoGenetico {
 	}
 
 	public void evalua(){
-		double puntAcu = 0; // puntuaci�n acumulada
+		double puntAcu = 0; // puntuacion acumulada
 		double sumaAptitud = 0; // suma de la aptitud
 
 		sumaAptitud = pob[0].adaptacion;
@@ -255,7 +259,7 @@ public class AlgoritmoGenetico {
 		else adaptarMinimizacion(tamElite);
 
 		evalua();
-
+		
 		while (generacionActual < numMaxGen) {
 			if (tamElite > 0) separaElite(tamElite);
 
@@ -275,10 +279,10 @@ public class AlgoritmoGenetico {
 			mejor(generacionActual);
 			mejorAbs(generacionActual);
 
-			if(generacionActual > 0 && genMedia[generacionActual] > genMedia[generacionActual - 1])
-				generacionActual++;
-			else if(generacionActual == 0)
-				generacionActual++;
+			if (contractividad && generacionActual > 0) {
+				if(genMedia[generacionActual] < genMedia[generacionActual - 1])
+					generacionActual++;
+			} else generacionActual++;
 		}
 	}
 
@@ -383,6 +387,18 @@ public class AlgoritmoGenetico {
 
 	public int getnGenes() {
 		return pob[0].getnGenes();
+	}
+
+	public String getContractividad() {
+		String sContractividad;
+		if (contractividad) sContractividad = "True";
+		else sContractividad = "False";
+		return sContractividad;
+	}
+
+	public void setContractividad(String sContractividad) {
+		if (sContractividad == "True") contractividad = true;
+		else contractividad = false;
 	}
 
 

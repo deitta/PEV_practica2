@@ -12,7 +12,7 @@ public class SeleccionRuleta implements AlgoritmoSeleccion {
 		for (int i = 0; i < tamPob; i++){
 			prob = Math.random();
 			posSuper = 0;
-			while ((posSuper < tamPob-1) && (prob > pob[posSuper].getPuntAcu())) posSuper++;
+			while ((posSuper < pob.length-1) && (prob > pob[posSuper].getPuntAcu())) posSuper++;
 			selSuper[i] = posSuper;
 		}
 		

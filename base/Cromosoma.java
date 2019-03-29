@@ -7,7 +7,7 @@ public class Cromosoma {
 	protected double punt; // puntRelat = aptitud / sumaAptitud
 	protected double puntAcu; // para seleccion
 	
-	private int nGenes = 9; //con 26 sale error en sel.ranking (no estoy segura)
+	private int nGenes = 26; // 26 genes porque son 27 ciudades, pero siempre empezamos y acabamos por la misma, madrid.
 	protected double adaptacion;
 	private boolean maximizar = false;
 	
@@ -25,8 +25,8 @@ public class Cromosoma {
 		
 		for (int i = 0; i < getnGenes(); i++) {
 			do {
-				ciudad = (int) (Math.random()*(nGenes)); //NO HACE FALTA NGENES+1 PORQUE SINO TENDRIAMOS 1 NUM DE GEN MAS
-			} while(incluidos[ciudad] || ciudad == 25);
+				ciudad = (int) (Math.random()*(nGenes+1)); //Ponemos mas uno porque el numero de ciudades que hay es 27, una mas que genes en nuestro cromosoma
+			} while(incluidos[ciudad] || ciudad == 25); // descartamos la ciudad 25 porque corresponde a Madrid que es la primera en recorrer y por tanto la obviamos del cromosoma.
 			genes[i] = new Gen(ciudad);
 			incluidos[ciudad] = true;
 		}
