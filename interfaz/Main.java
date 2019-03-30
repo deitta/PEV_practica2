@@ -75,7 +75,7 @@ public class Main extends JFrame {
 				plot.removeAllPlots();
 				AG.AlgoritmoGeneticoFuncion();
 				// define the legend position
-				double[] x = new double[AG.getNumMaxGen()];
+				double[] x = new double[AG.getGeneracionActual()];
 				for (int i = 0; i < x.length; i++){
 					x[i] = i;
 				}

@@ -32,6 +32,8 @@ public class AlgoritmoGenetico {
 	double[] mejorAbsoluto; //azul
 
 	boolean contractividad;
+	
+	int generacionActual;
 
 	public AlgoritmoGenetico() {
 		tamPob = 100;
@@ -250,9 +252,10 @@ public class AlgoritmoGenetico {
 	}
 
 	public void AlgoritmoGeneticoFuncion(){
-		int generacionActual = 0;
+		int generacionesAtascado = 0;
 		int tamElite = (int) (tamPob*elitismo);
-
+		generacionActual = 0;
+		
 		inicializaPoblacion();
 
 		if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
@@ -260,7 +263,7 @@ public class AlgoritmoGenetico {
 
 		evalua();
 		
-		while (generacionActual < numMaxGen) {
+		while (generacionActual < numMaxGen && generacionesAtascado < numMaxGen) {
 			if (tamElite > 0) separaElite(tamElite);
 
 			seleccion();
@@ -280,8 +283,11 @@ public class AlgoritmoGenetico {
 			mejorAbs(generacionActual);
 
 			if (contractividad && generacionActual > 0) {
-				if(genMedia[generacionActual] < genMedia[generacionActual - 1])
+				if(genMedia[generacionActual] < genMedia[generacionActual - 1]) {
 					generacionActual++;
+					generacionesAtascado = 0;
+				}
+				else generacionesAtascado++;
 			} else generacionActual++;
 		}
 	}
@@ -399,6 +405,10 @@ public class AlgoritmoGenetico {
 	public void setContractividad(String sContractividad) {
 		if (sContractividad == "True") contractividad = true;
 		else contractividad = false;
+	}
+
+	public int getGeneracionActual() {
+		return generacionActual;
 	}
 
 
