@@ -7,7 +7,7 @@ public class Cromosoma {
 	protected double punt; // puntRelat = aptitud / sumaAptitud
 	protected double puntAcu; // para seleccion
 	
-	private int nGenes = 26; // 26 genes porque son 27 ciudades, pero siempre empezamos y acabamos por la misma, madrid.
+	private int nGenes = 27; // 27 genes porque son 28 ciudades, pero siempre empezamos y acabamos por la misma, madrid.
 	protected double adaptacion;
 	private boolean maximizar = false;
 	
@@ -41,6 +41,7 @@ public class Cromosoma {
 		int fitness = 0, ciudad = 25;
 
 		for (int i = 0; i < nGenes; i++){
+			if (genes[i].ciudad == ciudad) System.out.println("Ups en " + Integer.toString(i) + ": " + Integer.toString(genes[i].ciudad) + ", " + Integer.toString(ciudad));
 			fitness += Ciudades.distanciaA(genes[i].ciudad, ciudad);
 			ciudad = genes[i].ciudad;
 		}
@@ -95,7 +96,6 @@ public class Cromosoma {
 		String cromosoma = "(Adap: " + String.format("%.3f", adaptacion) + ", Fit: " + String.format("%.3f", fitness) + ")\n";
 		for (int i = 0; i < nGenes - 1; i++){
 			cromosoma += '[' + Integer.toString(i) + "] " + this.genes[i].toString() + ", ";
-			if ((i+1) % 10 == 0) cromosoma += "\n";
 		}
 		cromosoma += '[' + Integer.toString(nGenes - 1) + "] " + this.genes[nGenes - 1].toString();
 
