@@ -9,7 +9,7 @@ public class CruceERX implements AlgoritmoCruce {
 	boolean encontrada;
 	
 	public void cruce(Cromosoma padre1, Cromosoma padre2, Cromosoma hijo1, Cromosoma hijo2) {
-		ArrayList<Integer>[] conectividades = calculaConectividades(padre1, padre2);
+		ArrayList<Integer>[] conectividades = calculaConectividades(padre1, padre2); // Tabla de conectividades. Cada elemento del array representa a una ciudad y es un ArrayList con la lista de ciudades adyacentes 
 
 		hijo1.genes[0].setCiudad(padre1.genes[0].getCiudad());
 		hijo2.genes[0].setCiudad(padre2.genes[0].getCiudad());
@@ -49,6 +49,7 @@ public class CruceERX implements AlgoritmoCruce {
 		return true;
 	}
 
+	// devuelve la tabla de conectividades
 	private ArrayList<Integer>[] calculaConectividades(Cromosoma padre1, Cromosoma padre2){
 		int nGenes = padre1.genes.length, ciudadP1, ciudadP2, anterior, siguiente;
 		@SuppressWarnings("unchecked")
