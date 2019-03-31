@@ -26,10 +26,10 @@ public class CrucePMX implements AlgoritmoCruce {
 				j = puntDC1;
 				do { // comprobamos si padre1 -> ciudad[i] ya esta en el hijo
 					conflicto = hijo1.genes[j].getCiudad() == padre1.genes[indP1].getCiudad();
-					j = (j+1) % nGenes;
-				} while (!conflicto && j != i);
+					j++;
+				} while (!conflicto && j < puntDC2);
 				// si hay conflicto comprobamos que la nueva ciudad a incluir no presenta conflicto
-				if (conflicto) indP1 = (nGenes + (j-1))%nGenes;
+				if (conflicto) indP1 = j-1;
 			} while (conflicto);
 			// si hay conflicto sustituimos por la ciudad del padre1 que corresponde a  la posicion de la ciudad i-esima del padre1, dentro del padre2
 			hijo1.genes[i].setCiudad(padre1.genes[indP1].getCiudad());
@@ -40,9 +40,9 @@ public class CrucePMX implements AlgoritmoCruce {
 				j = puntDC1;
 				do {
 					conflicto = hijo2.genes[j].getCiudad() == padre2.genes[indP2].getCiudad();
-					j = (j+1) % nGenes;
-				} while (!conflicto && j != i);
-				if (conflicto) indP2 = (nGenes + (j-1))%nGenes;
+					j++;
+				} while (!conflicto && j < puntDC2);
+				if (conflicto) indP2 = j-1;
 			} while (conflicto);
 			hijo2.genes[i].setCiudad(padre2.genes[indP2].getCiudad());
 		}
