@@ -7,7 +7,7 @@ public class CrucePMX implements AlgoritmoCruce {
 		int nGenes = padre1.getnGenes();
 		int puntDC1 = (int) (Math.random()*nGenes), puntDC2 = (int) (Math.random()*nGenes), puntDCAux = puntDC1;
 		if (puntDC1 == puntDC2) puntDC2 = (puntDC2+1) % nGenes;
-		if (puntDC1 > puntDC2){
+		if (puntDC1 > puntDC2) {
 			puntDC1 = puntDC2;
 			puntDC2 = puntDCAux;
 		}
@@ -16,31 +16,35 @@ public class CrucePMX implements AlgoritmoCruce {
 			hijo1.genes[i].setCiudad(padre2.genes[i].getCiudad());
 			hijo2.genes[i].setCiudad(padre1.genes[i].getCiudad());
 		}
-		
+
 		boolean conflicto = false;
-		int j;
+		int indP1, indP2, j;
 		for (int i = puntDC2; i >= puntDC2 || i < puntDC1; i = (i+1) % nGenes){
 			// hijo 1
-			// comprobamos si padre1 -> ciudad[i] ya esta en el hijo
-			j = puntDC1;
+			indP1 = i;
 			do {
-				conflicto = hijo1.genes[j].getCiudad() == padre1.genes[i].getCiudad();
-				j++;
-			} while (!conflicto && j < puntDC2);
+				j = puntDC1;
+				do { // comprobamos si padre1 -> ciudad[i] ya esta en el hijo
+					conflicto = hijo1.genes[j].getCiudad() == padre1.genes[indP1].getCiudad();
+					j = (j+1) % nGenes;
+				} while (!conflicto && j != i);
+				// si hay conflicto comprobamos que la nueva ciudad a incluir no presenta conflicto
+				if (conflicto) indP1 = (nGenes + (j-1))%nGenes;
+			} while (conflicto);
 			// si hay conflicto sustituimos por la ciudad del padre1 que corresponde a  la posicion de la ciudad i-esima del padre1, dentro del padre2
-			if (conflicto)
-				hijo1.genes[i].setCiudad(padre1.genes[j-1].getCiudad());
-			else hijo1.genes[i].setCiudad(padre1.genes[i].getCiudad());
-			
+			hijo1.genes[i].setCiudad(padre1.genes[indP1].getCiudad());
+
 			// hijo 2
-			j = puntDC1;
+			indP2 = i;
 			do {
-				conflicto = hijo2.genes[j].getCiudad() == padre2.genes[i].getCiudad();
-				j++;
-			} while (!conflicto && j < puntDC2);
-			if (conflicto)
-				hijo2.genes[i].setCiudad(padre2.genes[j-1].getCiudad());
-			else hijo2.genes[i].setCiudad(padre2.genes[i].getCiudad());
+				j = puntDC1;
+				do {
+					conflicto = hijo2.genes[j].getCiudad() == padre2.genes[indP2].getCiudad();
+					j = (j+1) % nGenes;
+				} while (!conflicto && j != i);
+				if (conflicto) indP2 = (nGenes + (j-1))%nGenes;
+			} while (conflicto);
+			hijo2.genes[i].setCiudad(padre2.genes[indP2].getCiudad());
 		}
 	}
 }
