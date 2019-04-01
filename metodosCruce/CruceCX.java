@@ -11,15 +11,15 @@ public class CruceCX implements AlgoritmoCruce {
 		ArrayList<Integer> genesP2 = new ArrayList<Integer>();
 		ArrayList<Integer> genesH1 = new ArrayList<Integer>();
 		ArrayList<Integer> genesH2 = new ArrayList<Integer>();
-		int ind = 0;
+		int ind = 0, nGenes = padre1.genes.length;
 		
-		for(int i = 0; i < padre1.genes.length; i++) {
+		for(int i = 0; i < nGenes; i++) {
 			genesP1.add(padre1.genes[i].getCiudad());
 			genesP2.add(padre2.genes[i].getCiudad());
 		}
 		
 		// copiamos los genes de padre2 en hijo1 y los de padre1 en hijo2
-		for (int i = 1; i < padre2.genes.length; i++) {
+		for (int i = 1; i < nGenes; i++) {
 			hijo1.genes[i].setCiudad(genesP2.get(i));
 			hijo2.genes[i].setCiudad(genesP1.get(i));
 		}

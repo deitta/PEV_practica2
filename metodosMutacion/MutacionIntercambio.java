@@ -2,6 +2,7 @@ package metodosMutacion;
 
 import base.Cromosoma;
 
+// intercambia la posicion de dos genes
 public class MutacionIntercambio implements AlgoritmoMutacion {
 
 	public void mutacion(Cromosoma[] pob, double probMutacion, int tamPob) {

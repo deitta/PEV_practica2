@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import base.Cromosoma;
 import base.Gen;
 
+// Es bastante lento
 public class CruceERX implements AlgoritmoCruce {
 	boolean encontrada;
 	

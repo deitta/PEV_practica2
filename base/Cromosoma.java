@@ -41,7 +41,6 @@ public class Cromosoma {
 		int fitness = 0, ciudad = 25;
 
 		for (int i = 0; i < nGenes; i++){
-			if (genes[i].ciudad == ciudad) System.out.println("Ups en " + Integer.toString(i) + ": " + Integer.toString(genes[i].ciudad) + ", " + Integer.toString(ciudad));
 			fitness += Ciudades.distanciaA(genes[i].ciudad, ciudad);
 			ciudad = genes[i].ciudad;
 		}
