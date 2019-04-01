@@ -6,7 +6,7 @@ import java.util.Collections;
 import base.Cromosoma;
 import base.OrdenCromosoma;
 
-// conserva entre [0 6] copias del 15% de los mejores indi de pob (hasta 0% de nuevaPob) y el 5% de los peores. Lo restante lo rellena aleatoriamente
+// conserva entre [0 6] copias del 15% de los mejores indi de pob (hasta 90% de nuevaPob) y el 5% de los peores. Lo restante lo rellena aleatoriamente
 public class SeleccionPropia implements AlgoritmoSeleccion {
 
 	public void seleccion(Cromosoma[] pob, Cromosoma[] nuevaPob, int tamPob) {

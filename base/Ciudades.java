@@ -11,7 +11,7 @@ public class Ciudades {
 		if (ciudadA < ciudadB){
 			ciudadA = ciudadB;
 			ciudadB = ciudadAux;
-		}
+		} else if (ciudadA == ciudadB) System.out.println("Ups... :" + Integer.toString(ciudadA) + ", " + Integer.toString(ciudadB));
 
 		return _DIST[ciudadA][ciudadB];
 	}

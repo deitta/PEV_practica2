@@ -43,16 +43,13 @@ public class AlgoritmoGenetico {
 		probMutacion = 0.05;
 		tolerancia = 0.001;
 		seleccion = "Ruleta";
-		cruce = "OX";
-		mutacion = "Insercion";
+		cruce = "PMX";
+		mutacion = "Heuristica";
 		participantes = 3;
 		elitismo = 0;
 		contractividad = false;
 
-		genMedia = new double[numMaxGen];
-		genMejor = new double[numMaxGen];
-		mejorAbsoluto = new double[numMaxGen];
-
+		// en principio lo de abajo no es necesario pero si se quita da error por toString
 		pob = new Cromosoma[tamPob];
 		elite = new Cromosoma[(int) (tamPob*elitismo)];
 
@@ -64,6 +61,10 @@ public class AlgoritmoGenetico {
 	}
 
 	public void inicializaPoblacion() {
+		genMedia = new double[numMaxGen];
+		genMejor = new double[numMaxGen];
+		mejorAbsoluto = new double[numMaxGen];
+		
 		pob = new Cromosoma[tamPob];
 		elite = new Cromosoma[(int) (tamPob*elitismo)];
 
@@ -276,7 +277,7 @@ public class AlgoritmoGenetico {
 			else adaptarMinimizacion(tamElite);
 
 			evalua();
-
+			
 			// para las graficas
 			media(generacionActual);
 			mejor(generacionActual);
