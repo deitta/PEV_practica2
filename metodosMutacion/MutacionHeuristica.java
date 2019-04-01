@@ -7,6 +7,7 @@ import base.Cromosoma;
 import base.Gen;
 
 public class MutacionHeuristica implements AlgoritmoMutacion {
+	int indPermutacion;
 
 	@Override
 	public void mutacion(Cromosoma[] pob, double probMutacion, int tamPob) {
@@ -14,8 +15,9 @@ public class MutacionHeuristica implements AlgoritmoMutacion {
 		double prob;
 		int N = 3, numPermutaciones = factorial(N), nGenes = pob[0].getnGenes(), mejorHeuristica;
 		ArrayList<Integer> ciudadesSelec = new ArrayList<Integer>(); // guardara las N ciudades seleccionadas para cada individuo
-		Gen[] mejorPermutacion = new Gen[nGenes];
-		Gen[] permutacion;
+		ArrayList<Integer> posicionesSelec = new ArrayList<Integer>(); // guardara las N ciudades seleccionadas para cada individuo
+		Gen[] mejorPermutacion = new Gen[nGenes], permutacion;
+		ArrayList<Gen[]> permutaciones = new ArrayList<Gen[]>();
 
 		for (int i = 0; i < tamPob; i++) {
 			mutado = false;
@@ -23,40 +25,85 @@ public class MutacionHeuristica implements AlgoritmoMutacion {
 			prob = Math.random(); // se genera un numero aleatorio entre [0 1]
 			// mutan los genes con prob<probMutacion
 			if (prob < probMutacion) {
-				// Seleccionas las n ciudades que vas a modificar. Sin repeticiones.
-				for (int j = 0; j < N; j++) {
-					do {
+				mutado = true;
+				permutacion = new Gen[nGenes];
+				
+				for (int k = 0; k < nGenes; k++)
+					permutacion[k] = new Gen(pob[i].genes[k].getCiudad());
+				
+				for (int j = 0; j < numPermutaciones; j++) { // inicializa el arrayList donde guardamos todas las permutaciones
+					permutaciones.add(new Gen[nGenes]);
+					for (int k = 0; k < nGenes; k++)
+						permutaciones.get(j)[k] = new Gen(pob[i].genes[k].getCiudad());
+				}
+				
+				int ciudad, pos;
+				for (int j = 0; j < N; j++) { // Selecciona las n ciudades a modificar. Sin repeticiones.
+					do { // guarda la ciudad en ciudadesSelec
 						repetido = false;
-						ciudadesSelec.add((int) (Math.random()*nGenes));
-						for (int k = 0; k < j && !repetido; k++) repetido = ciudadesSelec.get(j) == ciudadesSelec.get(k);
-						if (repetido) ciudadesSelec.remove(j);
+						ciudad = (int) (Math.random()*nGenes+1);
+						repetido = ciudad == 25; // si la ciudad es madrid(25) entonces la descartamos
+						for (int k = 0; k < j && !repetido; k++) repetido = ciudad == ciudadesSelec.get(k);
 					} while (repetido);
-				}
+					ciudadesSelec.add(ciudad);
 
-				int ciudad;
-				// Buscamos la mejor permutacion al tiempo que las generamos
-				mejorPermutacion = pob[i].genes; // por poner uno con el que comparar
+					// guarda la posicion de la ciudadSel(j) en posicionesSelec
+					pos = 0;
+					while (ciudadesSelec.get(j) != pob[i].genes[pos].getCiudad()) pos++;
+					posicionesSelec.add(pos);
+					
+					// quita las ciudades seleccionadas de las futuras permutaciones. para facilitar la comprobacion en contiene(...)
+					for (int k = 0; k < numPermutaciones; k++)
+						permutaciones.get(k)[posicionesSelec.get(j)] = new Gen(-1);
+					permutacion[posicionesSelec.get(j)] = new Gen(-1);
+				}
+				
+				indPermutacion = 0;
+				permuta(pob[i].genes, permutacion, ciudadesSelec, posicionesSelec, permutaciones, N, N); // Rellena el arrayList con todas las posibles permutaciones
+				
+				// Busca la mejor permutacion de las generadas
+				mejorPermutacion = permutaciones.get(0);
 				mejorHeuristica = resultadoHeuristica(mejorPermutacion, ciudadesSelec, N);
-				for (int j = 0; j < numPermutaciones; j++) { // generamos las numPermutaciones
-					permutacion = new Gen[nGenes]; // hacemos new en cada permutacion para que no haya problemas con los punteros
-					for (int k = 0; k < nGenes; k++) { // rellenamos cada permutacion con su orden unico, cambiando solo el orden de las ciudades seleccionadas
-						ciudad = pob[i].genes[k].getCiudad();
-						if (ciudadesSelec.contains(ciudad))
-							permutacion[k] = new Gen(ciudadesSelec.get((j+ciudadesSelec.indexOf(ciudad))%N));
-						else permutacion[k] = new Gen(ciudad);
-					}
-					if (resultadoHeuristica(permutacion, ciudadesSelec, N) < mejorHeuristica) {
-						mejorHeuristica = resultadoHeuristica(permutacion, ciudadesSelec, N);
-						mejorPermutacion = permutacion;
+				for (int j = 1; j < indPermutacion; j++) {
+					if (resultadoHeuristica(permutaciones.get(j), ciudadesSelec, N) < mejorHeuristica) {
+						mejorPermutacion = permutaciones.get(j);
+						mejorHeuristica = resultadoHeuristica(mejorPermutacion, ciudadesSelec, N);
 					}
 				}
-				pob[i].genes = mejorPermutacion; // es redundante por que ambos punteros apuntan a lo mismo?
+				
+				pob[i].genes = mejorPermutacion;
+				
+				if (mutado) {
+					pob[i].setFitness(pob[i].evaluaCromosoma());
+					for (int j = 0; j < N; j++) {
+						ciudadesSelec.remove(0);
+						posicionesSelec.remove(0);
+					}
+					for (int j = 0; j < numPermutaciones; j++)
+						permutaciones.remove(0);
+				}
 			}
-			
-			if (mutado) pob[i].setFitness(pob[i].evaluaCromosoma());
-			ciudadesSelec.clear();
 		}
 
+	}
+	
+	private void permuta(Gen[] genes, Gen[] permutacion, ArrayList<Integer> ciudadesSelec, ArrayList<Integer> posicionesSelec, ArrayList<Gen[]> permutaciones, int N, int k) {
+		if (k == 0) {
+			for (int i = 0; i < genes.length; i++)
+				permutaciones.get(indPermutacion)[i].setCiudad(permutacion[i].getCiudad());
+			indPermutacion++;
+		}
+		else {
+			int ciudad;
+			for (int j = 0; j < N; j++) {
+				ciudad = ciudadesSelec.get(j);
+				if (!contiene(permutacion, ciudad)) {
+					permutacion[posicionesSelec.get(k-1)] = new Gen(ciudadesSelec.get(j));
+					permuta(genes, permutacion, ciudadesSelec, posicionesSelec, permutaciones, N, k-1);
+				}
+			}
+			permutacion[posicionesSelec.get(k-1)] = new Gen(-1);
+		}
 	}
 	
 	// Devuelve el resultado de aplicar la heuristica -> la suma de las distancias entre las ciudades movidas
@@ -69,6 +116,13 @@ public class MutacionHeuristica implements AlgoritmoMutacion {
 			}
 		}
 		return h;
+	}
+	
+	private boolean contiene(Gen[] genes, int ciudad) {
+		for (int i = 0; i < genes.length; i++)
+			if (genes[i].getCiudad() == ciudad)
+				return true;
+		return false;
 	}
 
 	private int factorial(int numero){
