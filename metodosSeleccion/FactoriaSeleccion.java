@@ -8,6 +8,7 @@ public class FactoriaSeleccion {
 			case "Restos": return new SeleccionRestos();
 			case "Ranking": return new SeleccionRanking();
 			case "Truncamiento": return new SeleccionTruncamiento();
+			case "Propia": return new SeleccionPropia();
 			default: return new SeleccionRuleta();
 		}
 	}

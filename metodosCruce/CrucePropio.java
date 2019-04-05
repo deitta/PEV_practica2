@@ -44,23 +44,19 @@ public class CrucePropio implements AlgoritmoCruce {
 		}
 		
 		// Incluimos las ciudades que no hemos podido heredar del segundo padre
-		int indNoIncluido = 0;
-		while (!vaciosH1.isEmpty())
-			for (; indNoIncluido < nGenes; indNoIncluido++)
-				if (!genesH1.contains(indNoIncluido)) {
-					hijo1.genes[vaciosH1.get(0)].setCiudad(indNoIncluido);
-					vaciosH1.remove(0);
-					genesH1.add(indNoIncluido);
-				}
+		for (int indNoIncluido = 0; indNoIncluido < nGenes+1 && !vaciosH1.isEmpty(); indNoIncluido++)
+			if (!genesH1.contains(indNoIncluido) && indNoIncluido != 25) {
+				hijo1.genes[vaciosH1.get(0)].setCiudad(indNoIncluido);
+				vaciosH1.remove(0);
+				genesH1.add(indNoIncluido);
+			}
 		
-		indNoIncluido = 0;
-		while (!vaciosH2.isEmpty())
-			for (; indNoIncluido < nGenes; indNoIncluido++)
-				if (!genesH2.contains(indNoIncluido)) {
-					hijo1.genes[vaciosH2.get(0)].setCiudad(indNoIncluido);
-					vaciosH2.remove(0);
-					genesH2.add(indNoIncluido);
-				}
+		for (int indNoIncluido = 0; indNoIncluido < nGenes+1 && !vaciosH2.isEmpty(); indNoIncluido++)
+			if (!genesH2.contains(indNoIncluido) && indNoIncluido != 25) {
+				hijo2.genes[vaciosH2.get(0)].setCiudad(indNoIncluido);
+				vaciosH2.remove(0);
+				genesH2.add(indNoIncluido);
+			}
 		
 	}
 

@@ -21,7 +21,7 @@ public class AlgoritmoGenetico {
 	String cruce;
 	String mutacion;
 	int participantes;
-	
+
 	double elitismo; // elitismo*tamPob = tamElite
 	Cromosoma[] elite;
 
@@ -32,7 +32,7 @@ public class AlgoritmoGenetico {
 	double[] mejorAbsoluto; //azul
 
 	boolean contractividad;
-	
+
 	int generacionActual;
 
 	public AlgoritmoGenetico() {
@@ -64,7 +64,7 @@ public class AlgoritmoGenetico {
 		genMedia = new double[numMaxGen];
 		genMejor = new double[numMaxGen];
 		mejorAbsoluto = new double[numMaxGen];
-		
+
 		pob = new Cromosoma[tamPob];
 		elite = new Cromosoma[(int) (tamPob*elitismo)];
 
@@ -100,7 +100,7 @@ public class AlgoritmoGenetico {
 		}
 
 		if(pob[posMejor].adaptacion > elMejor.adaptacion)
-				elMejor.copiaCromosoma(pob[posMejor]);
+			elMejor.copiaCromosoma(pob[posMejor]);
 	}
 
 	private void adaptarMinimizacion(int tamElite){
@@ -253,179 +253,210 @@ public class AlgoritmoGenetico {
 	}
 
 	public void AlgoritmoGeneticoFuncion(){
-		int generacionesAtascado = 0;
-		int tamElite = (int) (tamPob*elitismo);
-		generacionActual = 0;
-		
-		inicializaPoblacion();
+		// String[] seleccionEnum = new String[] { "Ruleta", "Torneo", "Restos", "Ranking", "Truncamiento", "Propio" };
+		// String[] cruceEnum = new String[] { "PMX", "OX", "Variante de OX", "CX", "ERX", "Ordinal", "Propio" }; // "PMX", "OX", "Variante de OX", "CX", "ERX", "Ordinal", "Propio" 
+		// String[] mutacionEnum = new String[] { "Heuristica", "Insercion", "Intercambio", "Inversion", "Propio" };
 
-		if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
-		else adaptarMinimizacion(tamElite);
+		// System.out.println("Elitismo: " + String.format("%.3f", elitismo));
 
-		evalua();
-		
-		while (generacionActual < numMaxGen && generacionesAtascado < numMaxGen) {
-			if (tamElite > 0) separaElite(tamElite);
+		// for (int nCruce = 0; nCruce < cruceEnum.length; nCruce++){
+		// 	cruce = cruceEnum[nCruce];
+		// 	System.out.println(cruceEnum[nCruce]);
 
-			seleccion();
-			cruce();
-			mutacion();
+		// 	for (int nSel = 0; nSel < seleccionEnum.length; nSel++){
+		// 		seleccion = seleccionEnum[nSel];
+		// 		System.out.println("\t" + seleccion);
 
-			if (tamElite > 0) incluyeElite(tamElite);
+		// 		for (int nMutacion = 0; nMutacion < mutacionEnum.length; nMutacion++){
+		// 			mutacion = mutacionEnum[nMutacion];
+		// 			System.out.print("\t" + "\t" +mutacionEnum[nMutacion] + ": ");
+				
+		// 			double media = 0, bestFitness = 0;
+					
+		// 			for(int i = 0; i < 10; i++){
+						int generacionesAtascado = 0;
+						int tamElite = (int) (tamPob*elitismo);
+						generacionActual = 0;
 
-			if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
-			else adaptarMinimizacion(tamElite);
+						inicializaPoblacion();
 
-			evalua();
-			
-			// para las graficas
-			media(generacionActual);
-			mejor(generacionActual);
-			mejorAbs(generacionActual);
+						if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
+						else adaptarMinimizacion(tamElite);
 
-			if (contractividad && generacionActual > 0) {
-				if(genMedia[generacionActual] < genMedia[generacionActual - 1]) {
-					generacionActual++;
-					generacionesAtascado = 0;
-				}
-				else generacionesAtascado++;
-			} else generacionActual++;
-		}
+						evalua();
+
+						while (generacionActual < numMaxGen && generacionesAtascado < numMaxGen) {
+							if (tamElite > 0) separaElite(tamElite);
+
+							seleccion();
+							cruce();
+							mutacion();
+
+							if (tamElite > 0) incluyeElite(tamElite);
+
+							if(pob[0].isMaximizar()) adaptarMaximizacion(tamElite);
+							else adaptarMinimizacion(tamElite);
+
+							evalua();
+
+							// para las graficas
+							media(generacionActual);
+							mejor(generacionActual);
+							mejorAbs(generacionActual);
+
+							if (contractividad && generacionActual > 0) {
+								if(genMedia[generacionActual] < genMedia[generacionActual - 1]) {
+									generacionActual++;
+									generacionesAtascado = 0;
+								}
+								else generacionesAtascado++;
+							} else generacionActual++;
+						}
+		// 				media += elMejor.fitness;
+		// 				if (elMejor.fitness < bestFitness) bestFitness = elMejor.fitness;
+		// 				elMejor = new Cromosoma();
+		// 			}
+		// 			media = media/10;
+		// 			System.out.println(media);
+		// 			System.out.println("");
+		// 		}
+		// 	}
+		// }
 	}
 
 
-	//Getters and setters
+//Getters and setters
 
-	public double[] getGenMedia() {
-		return genMedia;
-	}
+public double[] getGenMedia() {
+	return genMedia;
+}
 
-	public double[] getGenMejor() {
-		return genMejor;
-	}
+public double[] getGenMejor() {
+	return genMejor;
+}
 
-	public double[] getMejorAbsoluto() {
-		return mejorAbsoluto;
-	}
+public double[] getMejorAbsoluto() {
+	return mejorAbsoluto;
+}
 
-	public int getNumMaxGen() {
-		return numMaxGen;
-	}
+public int getNumMaxGen() {
+	return numMaxGen;
+}
 
-	public void setNumMaxGen(int numMaxGen) {
-		this.numMaxGen = numMaxGen;
-	}
+public void setNumMaxGen(int numMaxGen) {
+	this.numMaxGen = numMaxGen;
+}
 
-	public double getProbCruce() {
-		return probCruce;
-	}
+public double getProbCruce() {
+	return probCruce;
+}
 
-	public void setProbCruce(double probCruce) {
-		this.probCruce = probCruce;
-	}
+public void setProbCruce(double probCruce) {
+	this.probCruce = probCruce;
+}
 
-	public double getProbMutacion() {
-		return probMutacion;
-	}
+public double getProbMutacion() {
+	return probMutacion;
+}
 
-	public void setProbMutacion(double probMutacion) {
-		this.probMutacion = probMutacion;
-	}
+public void setProbMutacion(double probMutacion) {
+	this.probMutacion = probMutacion;
+}
 
-	public double getTolerancia() {
-		return tolerancia;
-	}
+public double getTolerancia() {
+	return tolerancia;
+}
 
-	public void setTolerancia(double tolerancia) {
-		this.tolerancia = tolerancia;
-	}
+public void setTolerancia(double tolerancia) {
+	this.tolerancia = tolerancia;
+}
 
-	public String getSeleccion() {
-		return seleccion;
-	}
+public String getSeleccion() {
+	return seleccion;
+}
 
-	public void setSeleccion(String seleccion) {
-		this.seleccion = seleccion;
-	}
+public void setSeleccion(String seleccion) {
+	this.seleccion = seleccion;
+}
 
-	public String getCruce() {
-		return cruce;
-	}
+public String getCruce() {
+	return cruce;
+}
 
-	public void setCruce(String cruce) {
-		this.cruce = cruce;
-	}
+public void setCruce(String cruce) {
+	this.cruce = cruce;
+}
 
-	public String getMutacion() {
-		return mutacion;
-	}
+public String getMutacion() {
+	return mutacion;
+}
 
-	public void setMutacion(String mutacion) {
-		this.mutacion = mutacion;
-	}
+public void setMutacion(String mutacion) {
+	this.mutacion = mutacion;
+}
 
-	public int getParticipantes() {
-		return participantes;
-	}
+public int getParticipantes() {
+	return participantes;
+}
 
-	public void setParticipantes(int participantes) {
-		this.participantes = participantes;
-	}
+public void setParticipantes(int participantes) {
+	this.participantes = participantes;
+}
 
-	public int getTamPob() {
-		return tamPob;
-	}
+public int getTamPob() {
+	return tamPob;
+}
 
-	public void setTamPob(int tamPob) {
-		this.tamPob = tamPob;
-	}
+public void setTamPob(int tamPob) {
+	this.tamPob = tamPob;
+}
 
-	public double getElitismo() {
-		return elitismo;
-	}
+public double getElitismo() {
+	return elitismo;
+}
 
-	public void setElitismo(double elitismo) {
-		this.elitismo = elitismo;
-	}
+public void setElitismo(double elitismo) {
+	this.elitismo = elitismo;
+}
 
-	public Cromosoma getElMejor() {
-		return elMejor;
-	}
+public Cromosoma getElMejor() {
+	return elMejor;
+}
 
-	public int getnGenes() {
-		return pob[0].getnGenes();
-	}
+public int getnGenes() {
+	return pob[0].getnGenes();
+}
 
-	public String getContractividad() {
-		String sContractividad;
-		if (contractividad) sContractividad = "True";
-		else sContractividad = "False";
-		return sContractividad;
-	}
+public String getContractividad() {
+	String sContractividad;
+	if (contractividad) sContractividad = "True";
+	else sContractividad = "False";
+	return sContractividad;
+}
 
-	public void setContractividad(String sContractividad) {
-		if (sContractividad == "True") contractividad = true;
-		else contractividad = false;
-	}
+public void setContractividad(String sContractividad) {
+	if (sContractividad == "True") contractividad = true;
+	else contractividad = false;
+}
 
-	public int getGeneracionActual() {
-		return generacionActual;
-	}
+public int getGeneracionActual() {
+	return generacionActual;
+}
 
 
 
-	// Para depurar
-	public String toString(){
-		String agString = "Elite: ";
-		for (int i = 0; i < elite.length - 1; i++)
-			agString += elite[i].toString() + ", ";
-		if (elite.length - 1 >= 0) agString += elite[elite.length - 1].toString();
-		agString += "\nPoblacion:";
+// Para depurar
+public String toString(){
+	String agString = "Elite: ";
+	for (int i = 0; i < elite.length - 1; i++)
+		agString += elite[i].toString() + ", ";
+	if (elite.length - 1 >= 0) agString += elite[elite.length - 1].toString();
+	agString += "\nPoblacion:";
 
-		for (int i = 0; i < pob.length - 1; i++)
-			agString += pob[i].toString() + ", ";
-		if (pob.length - 1 >= 0) agString += pob[pob.length - 1].toString() + "\nEl mejor: " + elMejor.toString();
+	for (int i = 0; i < pob.length - 1; i++)
+		agString += pob[i].toString() + ", ";
+	if (pob.length - 1 >= 0) agString += pob[pob.length - 1].toString() + "\nEl mejor: " + elMejor.toString();
 
-		return agString;
-	}
+	return agString;
+}
 }

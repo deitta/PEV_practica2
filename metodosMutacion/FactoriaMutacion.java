@@ -8,7 +8,7 @@ public class FactoriaMutacion {
 			case "Insercion": return new MutacionInsercion();
 			case "Intercambio": return new MutacionIntercambio();
 			case "Inversion": return new MutacionInversion();
-			// Propio
+			case "Propio": return new MutacionPropia();
 			default: return new MutacionInsercion();
 		}
 	}
